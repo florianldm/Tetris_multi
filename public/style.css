@@ -1,0 +1,163 @@
+/* CSS files add styling rules to your content */
+
+body {
+  font-family: helvetica, arial, sans-serif;
+  background:#CF4242 ;
+}
+
+#titre {
+  color: white;
+  font: 7em Bowlby One SC, Georgia, Arial;
+  text-align: center;
+  -webkit-animation:colorchange 20s infinite alternate;
+}
+
+#titre_menu {
+  display: inline;
+  color: white;
+  font: 0.7em Bowlby One SC, Georgia, Arial;
+  margin-left:1%;
+  padding: 0px 20px 8px;
+}
+
+h1{
+  font: 2em Bowlby One SC, Arial;
+  border-left: 10px solid #636363;
+  padding: 0px 10px 0px;
+}
+
+h2{
+  font: 1.4em Bebas Neue, Arial;
+  padding: 0px 10px 0px;
+}
+
+h2 a{
+  text-decoration: none;
+  color: red;
+}
+
+#menu {
+  background: #636363;
+	height: 45px;
+	box-shadow: 0px 4px 0px #CF4242;
+  position: fixed;
+  top: 0;
+  width:100%;
+}
+
+#menu li {
+	display: inline;
+	font: 2em Bebas Neue, Arial;
+	text-align: center;
+	opacity: 1;
+}
+
+#menu a {
+	color: #FBF8F8;
+	text-decoration: none;
+	padding: 0px 20px 8px;
+}
+
+#menu a:hover {
+	background-color: #ffffff;
+	color: #CF4242;
+  padding: 0px 20px 4px;
+}
+
+#tetrisbox{
+  background: black;
+}
+
+#tetrisbox h1{
+  border-left: 0px solid #636363;
+}
+
+#tetrisbox h1 a{
+  color: white;
+  border-left: 0px solid #636363;
+  text-decoration: none;
+  margin-left: 45%;
+}
+
+#tetrisbox h1 a:hover{
+  color: #CF4242;
+}
+
+#conteneur_box{
+  background: #CF4242;
+}
+
+#conteneur {
+  background: white;
+  box-shadow: 0px -4px 20px #636363;
+}
+
+#conteneur:hover{
+  background-color: #F0CC00;
+  color: white;
+}
+
+#conteneur2 {
+  background: white;
+  box-shadow: 0px -4px 20px #636363;
+}
+
+#conteneur2:hover{
+  background-color: green;
+  color: white;
+}
+
+#conteneur3{
+  background: white;
+  box-shadow: 0px -4px 20px #636363;
+}
+
+#conteneur3:hover{
+  background-color: #2685FF;
+  color: white;
+}
+
+#login{
+  background: white;
+  box-shadow: 0px -4px 20px #636363;
+  margin: 0 30%;
+}
+
+#login:hover{
+  box-shadow: 0px -4px 20px red;
+}
+
+#login:hover h1{
+  color: #CF4242;
+}
+
+#inscription{
+  background: white;
+  box-shadow: 0px -4px 20px #636363;
+  margin: 0 30%;
+}
+
+#inscription:hover{
+  box-shadow: 0px -4px 20px red;
+}
+
+#inscription:hover h1{
+  color: #CF4242;
+}
+
+#footer{
+  font-family: helvetica, arial, sans-serif;
+  background: #636363;
+  align: auto;
+}
+
+#footer h2{
+  color: white;
+  text-align: center;
+}
+
+@-webkit-keyframes colorchange {
+        0% { color: red; }
+        50% { color: yellow; }
+        100% { color: blue; }
+}

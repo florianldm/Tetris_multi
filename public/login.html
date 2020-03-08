@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tetris battle</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">    
+    <!-- import the webpage's javascript file -->
+    <script src="/script.js" defer></script>
+    <!-- import d'une police-->
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+    
+  </head> 
+  
+  <body>
+    <!-- Menu de la page -->
+    <div id= "menu">
+      <li><section id = "titre_menu">Tetris Battle!</section></li>
+      <li><a href="index.html" title="">Accueil</a></li>
+      <li><a href="login.html" title="">Jouer</a></li>
+      <li><a href="inscription.html" title="">S'inscrire</a></li>
+    </div>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    
+    <section id = "login">
+       <h1>Se connecter</h1>
+      
+      <!--FORMULAIRE DE CONNEXION-->
+       <form method="POST" action ="" align = "center">
+				<table align = "center"> <!-- création tableau -->
+					<tr>
+						<td align="right">
+							<label for="pseudo">
+							Username:</label>
+						</td>
+						<td>
+							<input type="text" placeholder="Votre pseudo" id="pseudo" name="pseudo" />
+						</td>
+					</tr>
+					<tr>
+						<td align="right">
+							<label for="mdp">
+							Mot de passe:</label>
+						</td>
+						<td>
+							<input type="password" placeholder="Entrer mot de passe" id="mdp" name="mdp" />
+						</td>
+					</tr>
+				</table>
+				<br/>
+				<input type="submit" name="formconnexion" value="Se connecter"/>
+			</form>
+      <!-- FIN FORMULAIRE DE CONNEXION -->
+      
+       <h2><a href="inscription.html">Pas inscrit ?</a></h2>
+     </section>
+    
+  
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    
+  </body>
+  
+</html>
