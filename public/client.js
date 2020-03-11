@@ -60,3 +60,8 @@ clearButton.addEventListener('click', event => {
     });
   dreamsList.innerHTML = "";
 });
+
+function controle(form) {
+  var test = document.form.pseudo.value;
+  alert("Vous avez tapé : " + test);
+}
