@@ -5,13 +5,17 @@ body {
   background:#CF4242 ;
 }
 
+/* Titre du jeu accueil (changement de couleurs)*/
 #titre {
   color: white;
   font: 7em Bowlby One SC, Georgia, Arial;
   text-align: center;
+  position: relative; 
+  z-index: 50;
   -webkit-animation:colorchange 20s infinite alternate;
 }
 
+/* Titre du jeu dans menu*/
 #titre_menu {
   display: inline;
   color: white;
@@ -36,11 +40,13 @@ h2 a{
   color: red;
 }
 
+/* Menu */
 #menu {
   background: #636363;
 	height: 45px;
 	box-shadow: 0px 4px 0px #CF4242;
   position: fixed;
+  z-index: 51;
   top: 0;
   width:100%;
 }
@@ -63,13 +69,81 @@ h2 a{
 	color: #CF4242;
   padding: 0px 20px 4px;
 }
+/* Fin menu */
 
+
+/* Concerne "Vos amis" et "vos statistiques" dans profil */
+#conteneur_profil table{
+  margin: auto;
+  border-spacing: 50px 0px; 
+}
+
+#conteneur_profil h2{
+  font: 2em Bowlby One SC, Arial;
+  color: white;
+  text-align: center;
+}
+
+#conteneur_profil h3{
+  font: 1.5em Bowlby One SC, Arial;
+  color: white;
+  text-align: center;
+}
+
+#conteneur_profil h3 a{
+  text-decoration: none;
+  color: white;
+}
+
+#conteneur_profil h3 a:hover{
+  background: white;
+  color: #CF4242;
+}
+
+/* Section amis en ligne*/
+#conteneur_AMIS{
+  background: white;
+  border-left: 0px;
+  box-shadow: 0px -4px 20px #636363;
+  width: 50%;
+  padding: 0px 200px 400px;
+}
+
+#conteneur_AMIS h1{
+  border-left: 0px;
+}
+
+#conteneur_AMIS:hover{
+  background-color: #F0CC00;
+  color: white;
+}
+
+#conteneur_SCORE{
+  background: white;
+  border-left: 0px;
+  box-shadow: 0px -4px 20px #636363;
+  width: 50%;
+  padding: 0px 200px 400px;
+}
+/* Section vos statistiques */
+#conteneur_SCORE h1{
+  border-left: 0px;
+}
+
+#conteneur_SCORE:hover{
+  background-color: #F0CC00;
+  color: white;
+}
+/* Fin section Vos amis" et "vos statistiques" dans profil */
+
+/* Boite "noire" dans index.html qui accueille Titre box + animation tetris */
 #tetrisbox{
   background: black;
 }
 
 #tetrisbox h1{
   border-left: 0px solid #636363;
+  color: white;
 }
 
 #tetrisbox h1 a{
@@ -82,11 +156,14 @@ h2 a{
 #tetrisbox h1 a:hover{
   color: #CF4242;
 }
+/*Fin boite noire*/
 
+/*Sections de l'accueil pour présenter les fonctionnalités*/
 #conteneur_box{
   background: #CF4242;
 }
 
+/* "Jouez à Tetris avec vos amis" */
 #conteneur {
   background: white;
   box-shadow: 0px -4px 20px #636363;
@@ -97,6 +174,7 @@ h2 a{
   color: white;
 }
 
+/* "Comparez vos scores" */
 #conteneur2 {
   background: white;
   box-shadow: 0px -4px 20px #636363;
@@ -107,6 +185,7 @@ h2 a{
   color: white;
 }
 
+/* "Defiez-vous" */
 #conteneur3{
   background: white;
   box-shadow: 0px -4px 20px #636363;
@@ -116,7 +195,9 @@ h2 a{
   background-color: #2685FF;
   color: white;
 }
+/* Fin conteneur sections présentation accueil */
 
+/*Page de connexion*/
 #login{
   background: white;
   box-shadow: 0px -4px 20px #636363;
@@ -131,6 +212,7 @@ h2 a{
   color: #CF4242;
 }
 
+/* Page d'inscription */
 #inscription{
   background: white;
   box-shadow: 0px -4px 20px #636363;
@@ -145,6 +227,7 @@ h2 a{
   color: #CF4242;
 }
 
+/* Bas de page */
 #footer{
   font-family: helvetica, arial, sans-serif;
   background: #636363;
@@ -156,6 +239,7 @@ h2 a{
   text-align: center;
 }
 
+/* Petite animation qui change le titre de couleur dans index.html*/
 @-webkit-keyframes colorchange {
         0% { color: red; }
         50% { color: yellow; }

@@ -1,0 +1,98 @@
+
+<img id = "carre" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl.png?v=1583972316464" style="width:50px;height:50px;">
+<img id = "l" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl2.png?v=1583974848396" style="width:70px;height:50px;">
+<img id = "t" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2FT.png?v=1583975654053" style="width:70px;height:50px;">
+<img id = "s" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fs.png?v=1583975925078" style="width:70px;height:50px;">
+<script>
+//const piece = document.querySelector("h1");
+  const piece = document.getElementById("carre");
+  const piece2 = document.getElementById("l");
+  const piece3 = document.getElementById("t");
+  const piece4 = document.getElementById("s");
+  
+  piece.style.position = "absolute";
+  piece2.style.position = "absolute";
+  piece3.style.position = "absolute";
+  piece4.style.position = "absolute";
+  
+  piece2.style.marginLeft = "40%";
+  piece3.style.marginLeft = "60%";
+  piece4.style.marginLeft = "90%";
+  
+  piece.style.visibility = "hidden";
+  piece2.style.visibility = "hidden";
+  piece3.style.visibility = "hidden";
+  piece4.style.visibility = "hidden";
+  
+  let topPos, topPos2, topPos3, topPos4;
+  topPos = topPos2 = topPos3 = topPos4 = 0;
+
+  function carre(){
+   if(topPos < 500){
+     if(topPos < 10 || topPos >  480){
+       piece.style.visibility = "hidden";
+     }
+     else piece.style.visibility = " visible";
+     topPos += 2;
+     piece.style.top = topPos + "px";
+   }
+   else{
+     setTimeout(() => {topPos = 0;}, 10000);
+   }
+   requestAnimationFrame(carre);
+ }
+  
+  function l(){
+   if(topPos2 < 500){
+     if(topPos2 < 10 || topPos2 >  480){
+       piece2.style.visibility = "hidden";
+     }
+     else piece2.style.visibility = " visible";
+     topPos2 += 2;
+     piece2.style.top = topPos2 + "px";
+   }
+   else{
+     setTimeout(() => {topPos2 = 0;}, 8000);
+   }
+   requestAnimationFrame(l);
+ }
+  
+  function t(){
+   if(topPos3 < 500){
+     if(topPos3 < 10 || topPos3 >  480){
+       piece3.style.visibility = "hidden";
+     }
+     else piece3.style.visibility = " visible";
+     topPos3 += 1;
+     piece3.style.top = topPos3 + "px";
+   }
+   else{
+     setTimeout(() => {topPos3 = 0;}, 6000);
+   }
+   requestAnimationFrame(t);
+ }
+  
+  function s(){
+   if(topPos4 < 500){
+     if(topPos4 < 10 || topPos4 >  480){
+       piece4.style.visibility = "hidden";
+     }
+     else piece4.style.visibility = " visible";
+     topPos4 += 2;
+     piece4.style.top = topPos4 + "px";
+   }
+   else{
+     setTimeout(() => {topPos4 = 0;}, 6000);
+   }
+   requestAnimationFrame(s);
+ }
+  
+  
+ requestAnimationFrame(carre);
+ setTimeout(() => {requestAnimationFrame(l);}, 8000);
+ setTimeout(() => {requestAnimationFrame(t);}, 6000);
+ setTimeout(() => {requestAnimationFrame(s);}, 4000);
+  
+
+
+</script>
