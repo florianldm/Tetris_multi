@@ -25,23 +25,23 @@ const db = new sqlite3.Database(dbFile);
 db.serialize(() => {
   if (!exists) {
     db.run(
-      "CREATE TABLE Dreams (id INTEGER PRIMARY KEY AUTOINCREMENT, dream TEXT)"
+      "CREATE TABLE Joueurs (id INTEGER PRIMARY KEY AUTOINCREMENT, Nom VARCHAR, Mdp VARCHAR)"
     );
-    console.log("New table Dreams created!");
+    console.log("Nouvelle table Joueurs créée!");
 
     // insert default dreams
     db.serialize(() => {
       db.run(
-        'INSERT INTO Dreams (dream) VALUES ("Find and count some sheep"), ("Climb a really tall mountain"), ("Wash the dishes")'
+        //insertion bdd
       );
     });
   } else {
-    console.log('Database "Dreams" ready to go!');
-    db.each("SELECT * from Dreams", (err, row) => {
+    console.log('Database "Joueurs" ready to go!');
+   /* db.each("SELECT * from Joueurs", (err, row) => {
       if (row) {
-        console.log(`record: ${row.dream}`);
+        console.log(`record: ${row.Joueurs}`);
       }
-    });
+    });*/
   }
 });
 
@@ -109,3 +109,4 @@ const cleanseString = function(string) {
 var listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);
 });
+
