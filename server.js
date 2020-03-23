@@ -21,30 +21,115 @@ const exists = fs.existsSync(dbFile);
 const sqlite3 = require("sqlite3").verbose();
 const db = new sqlite3.Database(dbFile);
 
-// if ./.data/sqlite.db does not exist, create it, otherwise print records to console
+
+//CREATION TABLE JOUEURS
+function create(){
 db.serialize(() => {
-  if (!exists) {
+  if (exists) {
     db.run(
-      "CREATE TABLE Joueurs (id INTEGER PRIMARY KEY AUTOINCREMENT, Nom VARCHAR, Mdp VARCHAR)"
+      "CREATE TABLE Joueurs (id INTEGER PRIMARY KEY AUTOINCREMENT, Nom TEXT, Mdp TEXT, Victoires INTEGER, Defaites INTEGER)"
     );
     console.log("Nouvelle table Joueurs créée!");
+    } else {
+      console.log('Database "Joueurs" ready to go!');
+    }
+})}
 
-    // insert default dreams
-    db.serialize(() => {
-      db.run(
-        //insertion bdd
-      );
+//INSERTION TABLE JOUEURS
+function insert(nom, mdp){
+  console.log(nom);
+  db.serialize(() => {
+    db.run('INSERT INTO Joueurs (Nom, Mdp, Victoires, Defaites) VALUES (?, ?, 0, 0 )', nom, mdp);
+    return;
+  });
+}
+
+
+//PROJECTION DE LA TABLE JOUEURS
+function select(){
+  db.serialize(() => {
+    db.each("SELECT DISTINCT * from Joueurs", (err, row) => {
+        if (row) console.log(`record: ${row.id} ${row.Nom} ${row.Mdp} ${row.Victoires} ${row.Defaites}`);
     });
-  } else {
-    console.log('Database "Joueurs" ready to go!');
-   /* db.each("SELECT * from Joueurs", (err, row) => {
-      if (row) {
-        console.log(`record: ${row.Joueurs}`);
-      }
-    });*/
+  });
+}
+select();
+
+//SUPPRIMER TABLE
+function drop(){
+db.serialize(() => {
+  if (exists) {
+    db.run(
+      "DROP TABLE Joueurs"
+    );
+    console.log("Table supprimée!");
+  }});
+}
+
+//SUPPRIMER TUPLES TABLE
+function clear(){
+  db.serialize(() => {
+    db.run("DROP TABLE Joueurs");
+    db.run( "CREATE TABLE Joueurs (id INTEGER PRIMARY KEY AUTOINCREMENT, Nom TEXT UNIQUE, Mdp TEXT, Victoires INTEGER, Defaites INTEGER)");
+    console.log("Table vidée");
+    return;
+  });
+}
+
+function check(nom, mdp){
+  var ok = 0;
+  db.serialize(() => {
+    db.each("SELECT DISTINCT * from Joueurs", (err, row) => {
+        if (row){
+          console.log(nom + " " + row.Nom.value);
+          console.log(mdp + " " + row.Mdp.value);
+          console.log(mdp == row.Nom);
+          if(row.Nom == nom) ok = 1;
+        } 
+    });
+  });
+  console.log("ok= " + ok);
+  if(ok == 1) return true;
+  else return false;
+}
+
+
+//clear();
+//drop();
+//create();
+
+//function hex_md5(s)    { return rstr2hex(rstr_md5(str2rstr_utf8(s))); }
+
+app.get('/profil', function(req, res){
+  var n = req.query.pseudo; 
+  var o = req.query.mdp;
+  var p = req.query.mdp2;
+  var salt = "D%|w-+==@47k01W&a"; //Valeur ajoutée au mdp pour sécuriser
+  
+  //console.log(md5(o.n.salt));
+  
+  //res.sendFile('/index.html');
+  if(o === p){
+    insert(n,o);
   }
+  res.redirect('/index.html');
 });
 
+app.get('/co', function(req, res){
+  var n = req.query.pseudo; 
+  var o = req.query.mdp;
+  var salt = "D%|w-+==@47k01W&a"; //Valeur ajoutée au mdp pour sécuriser
+  
+  //res.sendFile('/index.html');
+  if(check(n,o) == true){
+    res.send("Salut " + n + "!");
+  }
+  else res.send("!");
+  //res.redirect('/index.html');
+});
+
+
+/*
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
   response.sendFile(`${__dirname}/views/index.html`);
@@ -104,7 +189,7 @@ app.get("/clearDreams", (request, response) => {
 const cleanseString = function(string) {
   return string.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 };
-
+*/
 // listen for requests :)
 var listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`);
