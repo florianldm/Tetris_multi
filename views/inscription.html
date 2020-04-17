@@ -8,9 +8,9 @@
     
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">    
-    <!-- import the webpage's javascript file -->
    <!--<script src="/script.js" defer></script> -->
-    <script type="text/javascript" src="inscription.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="client.js" defer></script>
     <!-- import d'une police-->
     <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -20,9 +20,10 @@
     <!-- Menu de la page -->
     <div id= "menu">
       <li><section id = "titre_menu">Tetris Battle!</section></li>
-      <li><a href="index.html" title="">Accueil</a></li>
-      <li><a href="login.html" title="">Jouer</a></li>
-      <li><a href="inscription.html" title="">S'inscrire</a></li>
+      <li><a href="/" title="">Accueil</a></li>
+      <li><a id = "Jouer" title="">Jouer</a></li>
+      <li><a id = "connexion/deconnexion" title=""></a></li>
+      <li id = "inscrire"></li>
     </div>
     <!-- Fin menu -->
     <br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -61,11 +62,11 @@
 					</tr>
 				</table>
 				<br/>
-				<input type="submit" name="forminscription" value="S'inscrire" onclick="afficher(form)"/>
+				<input type="button" name="forminscription" value="S'inscrire" onclick="registerUser()"/>
 			</form>
       <!-- FIN FORMULAIRE D'INSCRIPTION -->
       
-       <h2><a href="login.html">Déjà inscrit ?</a></h2>
+       <h2><a href="/login">Déjà inscrit ?</a></h2>
      </section>
     
   
