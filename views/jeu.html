@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tetris battle</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">    
+    <!-- import the webpage's javascript file -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="client.js" defer></script>
+
+    <!-- import d'une police-->
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+  </head> 
+  
+  <body onpageshow="getStatsONOPEN(); getFriendsONOPEN(); getRankONOPEN();">
+    <!-- Menu de la page -->
+    <div id= "menu">
+      <li><section id = "titre_menu">Tetris Battle!</section></li>
+      <li><a href="/" title="">Accueil</a></li>
+      <li><a id = "Jouer" title="">Jouer</a></li>
+      <li><a id = "connexion/deconnexion" title=""></a></li>
+    </div>
+    <!-- Fin menu -->
+    <div>
+      <br/><br/><br/><br/>
+    </div>
+    
+    <section id= "conteneur_profil">
+      <!-- Popup d'invitation pour jouer -->
+      <div id = "popinvite">
+        <h1>Une invitation !</h1>
+        <div id = "inviteur"></div>
+        <br/><br/>
+        <img style= "max-width: 25%;height: auto;" src= "https://cdn.glitch.com/c63ee89a-eee4-4191-88cf-e3f3ecdd00fd%2Fswords.png?v=1586827662517">
+        <br/><br/>
+        <table><tr><td><input type="button" id="AcceptInv" value="Accepter" onclick="acceptInvite()"/></td><td><input type="button" id = "DenyInv" value="Refuser" onclick="denyInvite()"/></td></tr></table>
+      </div>
+      
+      <div id = "popajout">
+        <div id = "popajoute"></div>
+      </div>
+      
+      
+      <script>document.write('<h2>Bonjour '+ sessionStorage.username + ' </h2>');</script>
+      
+       <table id = "bloc1">
+          <tr>
+           <!-- Section statistiques -->
+         <td><section id = "conteneur_SCORE">
+           <h1 style = "white-space:nowrap; ">Mes statistiques</h1>
+           <div id = "affichage_stats">
+             <table id = "tableau_stats"> 
+               <!-- Est rempli lors de la réception des amis  -->
+             </table>
+           </div>
+         </section></td>
+           <!-- Fin Section statistiques -->
+         </tr>
+        </table>
+       
+        <table id = "bloc2">
+          <tr>
+         <!-- Section amis connectés -->
+         <td><section class = "conteneur_AMIS">
+           <h1>Mes amis</h1>
+           <input type="text" placeholder="Ajouter ami" id="ami" name="ami" /><input type="button" name="" value="Ajouter" onclick="addFriend();"/>
+           <input type="button" name="" value="Actualiser" onclick="getFriends();"/>
+           <div id = "erreur_ajout"></div>
+           <div id = "affichage_amis">
+             <table id = "tableau_amis"> 
+             </table>
+           </div>
+         </section></td>
+           <!-- Fin Section amis connectés -->
+           <td><section class = "conteneur_CLASSEMENT">
+           <h1>Le classement</h1>
+             <br/>
+             <div id = "affichage_classement">
+               <table id = "tableau_classement"> 
+               </table>
+             </div>
+           </section></td>
+         </tr>
+        </table>
+      <br/><br/>
+      <h3><a href="tetrisUnJoueur.html" id ="solo">Jouer en solo</a></h3>
+    </section>
+    <br/><br/>
+   
+    <!-- Bas de page -->
+    <div id = "footer">
+      <h2>
+        Site réalisé pour le projet AWS UVSQ 2020
+      </h2>
+    </div>
+    <!-- Fin bas de page -->
+  </body>
+</html>

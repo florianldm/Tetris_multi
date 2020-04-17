@@ -9,8 +9,8 @@
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">    
     <!-- import the webpage's javascript file -->
-   <!--<script src="/script.js" defer></script> -->
-    <script type="text/javascript" src="inscription.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="client.js" defer></script>
     <!-- import d'une police-->
     <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -20,17 +20,18 @@
     <!-- Menu de la page -->
     <div id= "menu">
       <li><section id = "titre_menu">Tetris Battle!</section></li>
-      <li><a href="index.html" title="">Accueil</a></li>
-      <li><a href="login.html" title="">Jouer</a></li>
-      <li><a href="inscription.html" title="">S'inscrire</a></li>
+      <li><a href="/" title="">Accueil</a></li>
+      <li><a id = "Jouer" title="">Jouer</a></li>
+      <li><a id = "connexion/deconnexion" title=""></a></li>
+      <li id = "inscrire"></li>
     </div>
     <!-- Fin menu -->
     <br/><br/><br/><br/><br/><br/><br/><br/><br/>
     
-    <section id = "inscription">
-       <h1>S'inscrire</h1>
-      <!--FORMULAIRE D'INSCRIPTION-->
-       <form name = "form" action ="profil"  method="get" align = "center">
+    <section id = "login">
+       <h1>Se connecter</h1>
+      <!--FORMULAIRE DE CONNEXION-->
+       <form name = "form" action ="" align = "center" >
 				<table align = "center"> <!-- création tableau -->
 					<tr>
 						<td align="right">
@@ -50,27 +51,16 @@
 							<input type="password" placeholder="Entrer mot de passe" id="mdp" name="mdp" />
 						</td>
 					</tr>
-          <tr>
-						<td align="right">
-							<label for="mdp2">
-							Mot de passe:</label>
-						</td>
-						<td>
-							<input type="password" placeholder="Confirmer mot de passe" id="mdp2" name="mdp2" />
-						</td>
-					</tr>
 				</table>
 				<br/>
-				<input type="submit" name="forminscription" value="S'inscrire" onclick = "register()"/>
+				<input type="button" name="formconnexion" value="Se connecter" onclick="connectUser(form)"/>
 			</form>
-      <!-- FIN FORMULAIRE D'INSCRIPTION -->
+      <!-- FIN FORMULAIRE DE CONNEXION -->
       
-       <h2><a href="login.html">Déjà inscrit ?</a></h2>
+       <h2><a href="/inscription">Pas inscrit ?</a></h2>
      </section>
     
-  
-      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     
   </body>
-  
 </html>

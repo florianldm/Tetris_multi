@@ -2,7 +2,8 @@
 
 body {
   font-family: helvetica, arial, sans-serif;
-  background:#CF4242 ;
+  background: #CF4242;
+  min-width:600px;
 }
 
 /* Titre du jeu accueil (changement de couleurs)*/
@@ -65,6 +66,7 @@ h2 a{
 }
 
 #menu a:hover {
+  transition: 0.2s;
 	background-color: #ffffff;
 	color: #CF4242;
   padding: 0px 20px 4px;
@@ -73,9 +75,30 @@ h2 a{
 
 
 /* Concerne "Vos amis" et "vos statistiques" dans profil */
-#conteneur_profil table{
-  margin: auto;
-  border-spacing: 50px 0px; 
+#bloc1{
+  margin-left: 15%;
+  margin-right: 10%;
+}
+
+#bloc2{
+  margin-left: 16%;
+  margin-right: 10%;
+  padding: 0px 0px 0px 0px;
+  table-layout: auto;
+  max-height: 10%;
+  border-spacing: 100px 0px
+}
+
+#bloc2 td {
+  height: 100%;
+  padding: 0px 0px 0px 0px;
+  margin-top: 0;
+  position: relative;
+  width: 500px;
+}
+
+#conteneur_profil td{
+  width: 10%;
 }
 
 #conteneur_profil h2{
@@ -101,38 +124,136 @@ h2 a{
 }
 
 /* Section amis en ligne*/
-#conteneur_AMIS{
+.conteneur_AMIS{
+  transition: 0.2s;
   background: white;
+  color: #3e3131;
   border-left: 0px;
   box-shadow: 0px -4px 20px #636363;
-  width: 50%;
-  padding: 0px 200px 400px;
+  margin-left: 2%;
+  padding: 0px 0px 0px 0px;
+  height: 100%;
 }
 
-#conteneur_AMIS h1{
+.conteneur_AMIS h1{
   border-left: 0px;
 }
 
-#conteneur_AMIS:hover{
+.conteneur_AMIS:hover{
   background-color: #F0CC00;
   color: white;
+  margin-left: 0%;
+}
+
+#affichage_amis{
+	overflow-y: scroll;
+	margin: 0px;
+	border-style: solid;
+	border-width: 1px;
+  min-height: 300px;
+  max-height: 300px;
+}
+t
+#affichage_amis h1{
+	font: 1em Bowlby One SC, Arial;
+  display: inline;
+}
+
+#tableau_amis {
+  display: inline-block; 
+}
+
+#tableau_amis h1{
+  font: 1em Bowlby One SC, Arial;
+  margin:0;
+}
+
+#tableau_amis td {
+  width: auto;
+}
+
+
+.conteneur_CLASSEMENT{
+  transition: 0.2s;
+  background: white;
+  color: #3e3131;
+  border-left: 0px;
+  box-shadow: 0px -4px 20px #636363;
+  margin-left: 2%;
+  padding: 0px 0px 0px;
+}
+
+.conteneur_CLASSEMENT h1{
+  border-left: 0px;
+}
+
+.conteneur_CLASSEMENT:hover{
+  background-color: #F0CC00;
+  color: white;
+  margin-left: 0%;
+}
+
+#affichage_classement{
+	overflow-y: scroll;
+	border-style: solid;
+	border-width: 1px;
+  min-height: 300px;
+  max-height: 300px;
+  text-align: center;
+}
+
+#tableau_classement{
+  margin: auto;
+  display: inline-block; 
+  overflow: auto;
+}
+
+#tableau_classement h1{
+  font: 1em Bowlby One SC, Arial;
+  margin:0;
+}
+
+#tableau_classement td {
+  width: auto;
 }
 
 #conteneur_SCORE{
-  background: white;
-  border-left: 0px;
+  transition: 0.5s;
+  background: #F0CC00;
+  color: white;
   box-shadow: 0px -4px 20px #636363;
-  width: 50%;
-  padding: 0px 200px 400px;
+  width: 100%;
+  margin: auto;
+  margin-left: 1%;
 }
 /* Section vos statistiques */
 #conteneur_SCORE h1{
   border-left: 0px;
+  margin-top:0px;
+  margin-bottom:0px;
+}
+
+#affichage_stats {
+	margin: 0px;
+  height: 20%;
+}
+
+#affichage_stats h1{
+  margin-left: 0px;
+  font: 1.5em Bowlby One SC, Arial;
+  display: inline;
+}
+
+#tableau_stats {
+  border-collapse: collapse;
+  table-layout: auto; 
+  width: 10%:
 }
 
 #conteneur_SCORE:hover{
-  background-color: #F0CC00;
-  color: white;
+  width: 100%;
+  transition: 0.5s;
+  margin-left: 0%;
 }
 /* Fin section Vos amis" et "vos statistiques" dans profil */
 
@@ -170,6 +291,7 @@ h2 a{
 }
 
 #conteneur:hover{
+  transition: 0.1s;
   background-color: #F0CC00;
   color: white;
 }
@@ -181,6 +303,7 @@ h2 a{
 }
 
 #conteneur2:hover{
+  transition: 0.1s;
   background-color: green;
   color: white;
 }
@@ -192,6 +315,7 @@ h2 a{
 }
 
 #conteneur3:hover{
+  transition: 0.1s;
   background-color: #2685FF;
   color: white;
 }
@@ -199,6 +323,7 @@ h2 a{
 
 /*Page de connexion*/
 #login{
+  transition: 0.3s;
   background: white;
   box-shadow: 0px -4px 20px #636363;
   margin: 0 30%;
@@ -206,14 +331,21 @@ h2 a{
 
 #login:hover{
   box-shadow: 0px -4px 20px red;
+  transition: 0.3s;
+}
+
+#login h1{
+  transition: 0.3s;
 }
 
 #login:hover h1{
+  transition: 0.3s;
   color: #CF4242;
 }
 
 /* Page d'inscription */
 #inscription{
+  transition: 0.3s;
   background: white;
   box-shadow: 0px -4px 20px #636363;
   margin: 0 30%;
@@ -221,10 +353,16 @@ h2 a{
 
 #inscription:hover{
   box-shadow: 0px -4px 20px red;
+  transition: 0.3s;
+}
+
+#inscription h1{
+  transition: 0.3s;
 }
 
 #inscription:hover h1{
   color: #CF4242;
+  transition: 0.3s;
 }
 
 /* Bas de page */
@@ -239,9 +377,102 @@ h2 a{
   text-align: center;
 }
 
+
 /* Petite animation qui change le titre de couleur dans index.html*/
 @-webkit-keyframes colorchange {
         0% { color: red; }
         50% { color: yellow; }
         100% { color: blue; }
+}
+
+#popinvite {
+  height: 300px;
+  width: 20%;
+  background-color: #FFFFFF;
+  text-align: center;
+  color: #95a5a6;
+  position: absolute;
+  top: -300px;
+  left: 80%;
+  transition: 0.5s;
+  z-index: 50;
+}
+
+#popinvite h1 {
+  border-left: 0px solid #636363;
+  font: 1.5em Bowlby One SC, Arial;
+}
+
+#popajout {
+  height: 40px;
+  width: 30%;
+  background-color: #FFFFFF;
+  text-align: center;
+  color: #95a5a6;
+  position: absolute;
+  top: -300px;
+  left: 2%;
+  transition: 0.5s;
+}
+
+#popajout h1 {
+  border-left: 0px solid #636363;
+  font: 1.2em Bowlby One SC, Arial;
+}
+
+@media screen and (max-width: 700px) {
+  html{
+    width:100%;
+  }
+  
+  body {
+    font-family: helvetica, arial, sans-serif;
+    background: #CF4242;
+    width:50%;
+  }
+  
+  #titre {
+    color: white;
+    font: 2em Bowlby One SC, Georgia, Arial;
+    text-align: center;
+    position: relative; 
+    z-index: 50;
+    -webkit-animation:colorchange 20s infinite alternate;
+  }
+
+  h1{
+    font: 1em Bowlby One SC, Arial;
+    border-left: 10px solid #636363;
+    padding: 0px 10px 0px;
+  }
+  
+  #menu {
+  background: #636363;
+	height: 45px;
+	box-shadow: 0px 4px 0px #CF4242;
+  position: fixed;
+  z-index: 51;
+  top: 0;
+  width:100%;
+}
+
+#menu li {
+	display: inline;
+	font: 1em Bebas Neue, Arial;
+	text-align: center;
+	opacity: 1;
+}
+
+#menu a {
+	color: #FBF8F8;
+	text-decoration: none;
+	padding: 0px 5px 8px;
+}
+
+#menu a:hover {
+  transition: 0.2s;
+	background-color: #ffffff;
+	color: #CF4242;
+  padding: 0px 0px 4px;
+}
 }

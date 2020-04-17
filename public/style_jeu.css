@@ -1,0 +1,123 @@
+/****************
+CSS page de fond
+*****************/
+h1{
+  text-align:center;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font: 1.65em Bowlby One SC, Georgia, Arial;
+  animation:colorchange 20s infinite alternate;
+}
+
+body{
+  background-color: black;
+  margin : auto auto;
+  width: 50%;
+}
+/*permet de changer de couleur ( utiliser pour le titre) */
+@-webkit-keyframes colorchange {
+        0% { color: red; }
+        50% { color: yellow; }
+        100% { color: blue; }
+}
+
+
+/*********************
+CSS Information joueur
+**********************/
+#Info{
+  position : absolute;
+  margin-top : 3%;
+  margin-left: 5%;
+  vertical-align:middle;
+  magin-left:20%
+}
+
+#Info tr{
+  list-style: none;
+  color: white;
+  font: 1.4em Bebas Neue, Arial;
+}
+
+/****************
+CSS Grille de jeu
+*****************/
+#grille{
+  margin-left:37%; 
+  margin-right:40%;
+  border-collapse: collapse;  
+}
+
+#grille td{
+  border: 1.5px solid white;
+  padding: 12px;
+  
+}
+/********************
+CSS Tetromino suivant
+*********************/
+#tetromino-suiv{
+  position : absolute;
+  margin-top : 15%;
+  margin-left:35%;
+  width : 90px;
+  border: thick double white;
+
+}
+#tetromino{
+   border: black;
+   border-collapse: collapse; 
+}
+#tetromino td{
+  padding: 10px;
+}
+
+/****************
+CSS Fin de partie
+*****************/
+#Fin {
+  position : absolute;
+  margin-top : 7%;
+  margin-left:15%;
+  width: 330px;
+  z-index : 1; /*pour mettre au premier plan*/
+  text-align: center;
+  
+  
+}
+#gameover h1{
+  font: 1.65em Bowlby One SC, Georgia, Arial;
+  
+}
+
+#retour a{
+  outline: none;
+  text-decoration: none;
+  color: white;
+  font: 1em Bowlby One SC, Georgia, Arial;
+  
+}
+/*lorsque le lien à déjà été visité*/
+#retour a:visited {
+  outline: none;
+  text-decoration: none;
+}
+/*modification de,la couleur lorsque l'on passe la souris sur le lien */
+#retour a:hover {
+  color : red;
+}
+/**************
+CSS bas de page
+***************/
+#footer{
+  font-family: helvetica, arial, sans-serif;
+  background: #636363;
+  align: auto;
+}
+
+#footer h2{
+  color: white;
+  text-align: center;
+}
