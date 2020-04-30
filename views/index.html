@@ -5,11 +5,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/c63ee89a-eee4-4191-88cf-e3f3ecdd00fd%2Ffavicon.png?v=1588178174851" />
     
     <!-- import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- import the webpage's javascript file -->
     <script src="animationindex.js" defer></script>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="client.js" defer></script>
     <!-- import d'une police-->
@@ -26,6 +29,39 @@
       <li><a id = "connexion/deconnexion" title=""></a></li>
       <li id = "inscrire"></li>
     </div>
+    
+    <section id= "conteneur_profil">
+    <div id = "popinvite">
+        <h1>Une invitation !</h1>
+        <div id = "inviteur"></div>
+        <br/><br/>
+        <img style= "max-width: 25%;height: auto;" src= "https://cdn.glitch.com/c63ee89a-eee4-4191-88cf-e3f3ecdd00fd%2Fswords.png?v=1586827662517">
+        <br/><br/>
+        <table><tr><td><input type="button" id="AcceptInv" value="Accepter" onclick="acceptInvite()"/></td><td><input type="button" id = "DenyInv" value="Refuser" onclick="denyInvite()"/></td></tr></table>
+    </div>
+    </section>
+    
+    <div class="menu" id="myTopnav">
+      <section id = "titre_menuMobile">Tetris Battle!</section>
+      <a href="/" title="">Accueil</a>
+      <a id = "JouerMobile" title="">Jouer</a>
+      <a id = "connexion/deconnexionMobile" title=""></a>
+      <a href = "" id = "inscrireMobile"></a>
+      <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+        <i class="fa fa-bars"></i>
+      </a>
+    </div>
+
+    <script>
+      function myFunction() {
+        var x = document.getElementById("myTopnav");
+        if (x.className === "menu") {
+          x.className += " responsive";
+        } else {
+          x.className = "menu";
+        }
+      }
+    </script>
     <!-- Fin menu -->
     
     <!-- Boite noire qui contient Titre + animation tetris + bouton jouer -->
@@ -33,10 +69,12 @@
       <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
       
       <!-- Chargement images pour animation -->
-      <img id = "carre" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl.png?v=1583972316464" style="width:50px;height:50px;">
-      <img id = "l" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl2.png?v=1583974848396" style="width:70px;height:50px;">
-      <img id = "t" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2FT.png?v=1583975654053" style="width:70px;height:50px;">
-      <img id = "s" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fs.png?v=1583975925078" style="width:70px;height:50px;">
+      <div id = "tetros">
+        <img id = "carre" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl.png?v=1583972316464" style="width:50px;height:50px;">
+        <img id = "l" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fl2.png?v=1583974848396" style="width:70px;height:50px;">
+        <img id = "t" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2FT.png?v=1583975654053" style="width:70px;height:50px;">
+        <img id = "s" src="https://cdn.glitch.com/1a60ff41-1ec6-408e-a08f-6f08f50d2a51%2Fs.png?v=1583975925078" style="width:70px;height:50px;">
+      </div>
       
       <div id="titre">Tetris Battle!</div>
       <br/><br/>
@@ -69,7 +107,7 @@
   <!-- Bas de page -->
   <div id = "footer">
     <h2>
-      Site réalisé pour le projet AWS UVSQ 2020
+      Tetris Battle! - Site réalisé pour le projet AWS UVSQ 2020
     </h2>
   </div>
   <!-- Fin bas de page -->

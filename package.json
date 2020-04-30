@@ -12,7 +12,10 @@
     "ws": "^7.2.3",
     "socket.io": "^2.3.0",
     "bcrypt": "^4.0.1",
-    "prompt-boxes": "^2.0.6"
+    "prompt-boxes": "^2.0.6",
+    "crypto": "^1.0.1",
+    "crypto-js": "^3.3.0",
+    "bower": "^1.8.8"
   },
   "engines": {
     "node": "12.x"

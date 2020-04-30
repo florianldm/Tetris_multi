@@ -1,93 +1,174 @@
 <!DOCTYPE html>
 <html>
-  
   <head>
     <meta charset="utf-8" />
     <title>Tetris un joueur</title>
     <!-- importe la fiche css associé à la partie un joueur -->
-    <link rel="stylesheet" href="/style_jeu.css"> 
+    <link rel="stylesheet" href="/style_jeu.css" />
     <!-- import d'une police -->
-    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap"  rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap"     rel="stylesheet" />
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/c63ee89a-eee4-4191-88cf-e3f3ecdd00fd%2Ffavicon.png?v=1588178174851" />
   </head>
 
   <body>
     <div>
       <!--Titre de la page-->
       <h1>Tetris Battle!</h1>
+        <!-- section utilisé lors d'une défaite -->
+      <div id="Fin">
+        <p id="gameover"></p>
+        <p id="retour"></p>
+      </div>
 
       <!-- taleau pour indiquer les informations sur le joueur -->
-      <table id = "Info">
+      <div id = "infos1v1">
+      <table id="Info">
         <!-- nom du joueur -->
         <tr>
-          <td>Player: </td> 
-          <script>document.write('<td >'+ sessionStorage.username+ ' </td>');</script>
+          <td>Joueur:</td>
+          <script>
+            document.write("<td>" + sessionStorage.username + " </td>");
+          </script>
         </tr>
-         <!-- Score cumulatif de toutes les parties -->
+        <!-- Score cumulatif de toutes les parties -->
         <tr>
-          <td>Score: </td>
-          <td id ="scoreT">  </td>
-          <script>document.getElementById("scoreT").innerHTML = sessionStorage.score;</script>
+          <td>Score:</td>
+          <td id="scoreT"></td>
+          <script>
+            document.getElementById("scoreT").innerHTML = sessionStorage.score;
+          </script>
         </tr>
-         <!-- Score de la partie en cour -->
+        <!-- Score de la partie en cour -->
         <tr>
-          <td>Score de la partie : </td> 
-          <td id="scoreP"> 0 </td>
-        </tr>  
+          <td>Score de la partie :</td>
+          <td id="scoreP">0</td>
+        </tr>
       </table>
-      <!-- section utilisé lors d'une défaite -->
-      <div id ="gameover"> </div>
-      
+
+      <table id="Infoj2">
+        <!-- nom du joueur -->
+        <tr>
+          <td>Joueur:</td>
+          <td id="nom_j2"></td>
+        </tr>
+
+        <!-- Score de la partie en cour -->
+        <tr>
+          <td>Score de la partie :</td>
+          <td id="scoreP_j2">0</td>
+        </tr>
+      </table>
+      </div>
+
+    
+      <script>
+        document.write("<table id = 'aligngrilles'><tr><td>");
+        var i, j;
+        document.write("<table><tr><td> <div id = 'tetrosuiv'>Tetromino suivant:</div> </td> </tr> <tr><td>");
+        document.write("<table id = 'tetromino' border= '1'>");
+        //génération d'une grille de 4 case de haut et 4 cases de large
+        for (i=0;i<4; i++){
+          document.write("<tr>");
+          for (j=0;j<4;j++){
+            document.write("<td id = 'test'></td>");
+            // change l'id afin d'y mettre la position de la case sous forme (ligne;colone)
+            document.getElementById("test").id = i+";"+j;
+          }
+          document.write("</tr>");
+        }
+        document.write("</table>");
+        document.write("</td></tr></table>");
+        document.write("</td>");
+      </script>
       <!-- génération de la grille de jeu -->
       <script>
+        document.write("<td>");
         document.write("<table id = 'grille' border= '1'>");
         var i, j;
         //génération d'une grille de 20 case de haut et 10 cases de large
-        for (i=0;i<20; i++){
+        for (i = 0; i < 20; i++) {
           document.write("<tr>");
-          for (j=0;j<10;j++){
+          for (j = 0; j < 10; j++) {
             document.write("<td id = 'test'></td>");
             // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
-            document.getElementById("test").id = i+","+j;
+            document.getElementById("test").id = i + "," + j;
+          }
+          document.write("</tr>");
+        }
+        document.write("</table></td>");
+      </script>
+      <script>
+         document.write("<td><table id = 'tetromino' border= '1'>");
+        var i, j;
+        //génération d'une grille de 4 case de haut et 4 cases de large
+        for (i=0;i<4; i++){
+          document.write("<tr>");
+          for (j=0;j<4;j++){
+            document.write("<td id = 'test'></td>");
+            // change l'id afin d'y mettre la position de la case sous forme (ligne;colone)
+            document.getElementById("test").id = i+";"+j;
           }
 
           document.write("</tr>");
         }
         document.write("</table>");
+        document.write("</td>");
       </script>
-
+      <!-- génération de la grille de jeu du joueur2 -->
+      <script>
+        document.write("<td><table id = 'grille' border= '1'>");
+        var i, j;
+        //génération d'une grille de 20 case de haut et 10 cases de large
+        for (i = 0; i < 20; i++) {
+          document.write("<tr>");
+          for (j = 0; j < 10; j++) {
+            document.write("<td id = '2nd'></td>");
+            // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
+            document.getElementById("2nd").id = i + "+" + j;
+          }
+          document.write("</tr>");
+        }
+        document.write("</table><td>");
+        document.write("</table>");
+      </script>
+      
+      <div id = "abandoninfo"></div>
+      <h3><a href="jeu.html" id ="abandon">Abandonner</a></h3>
       <!-- interaction via clavier-->
       <script>
-        
-        document.addEventListener("keydown", function(e){
-          if(e.keyCode === 37) cmd('droite');
-          
-          else if(e.keyCode == 38) cmd('rotate');
-         
-          else if(e.keyCode == 39) cmd('gauche');
-          
-          else if(e.keyCode == 40) cmd('bas');
-          
-          else if(e.keyCode == 27) location.replace("jeu.html");
-          
-
+        //enregistrement des entrée clavier de l'utilisateur 
+        document.addEventListener("keydown", function(e) {
+          if (e.keyCode === 37) cmd("droite");
+          else if (e.keyCode == 38) cmd("rotate");
+          else if (e.keyCode == 39) cmd("gauche");
+          else if (e.keyCode == 40) cmd("bas");
+          else if (e.keyCode == 27) location.replace("jeu.html");
+          //désactivation des touche flèchées
+          switch (e.keyCode) {
+            case 37:
+            case 38:
+            case 39:
+            case 40:
+              e.preventDefault();
+          }
         });
       </script>
-
       <!--comunication avec le serveur via websocket-->
       <script src="/socket.io/socket.io.js"></script>
       <!-- script du déroulement de la partie -->
-      
+
       <script>
+      
+        //retour profil abandon
+        document.getElementById("abandon").setAttribute("href", "/jeu");  
         /***********************************
          CONNECTION AU SERVEUR VIA SOCKET.IO
         ************************************/
-        
-        var socket = io.connect('wss://' + window.location.host);
-        socket.emit('setPseudo',sessionStorage.username);
-        //console.log("log")
-        //console.log("pulse")
-        
+        //connection avec le server via socket.io
+        var socket = io.connect("wss://" + window.location.host);
+        socket.emit("setPseudo", sessionStorage.username);
+
         /******************************************************
          INITIALISATION DES VARIABLES UTILISER DURANT LA PARTIE
         *******************************************************/
@@ -99,23 +180,37 @@
         var y3 = 0;
         var x4 = 0;
         var y4 = 0;
+        var x21 = 0;
+        var y21 = 0;
+        var x22 = 0;
+        var y22 = 0;
+        var x23 = 0;
+        var y23 = 0;
+        var x24 = 0;
+        var y24 = 0;
         var CMDsend;
         var scoreP = 0;
-        var clock = setInterval(sendCmd,100);
+        var scoreP2 = 0;
+        //la fonction d'envoi des actions demandé par le joueur est appelé toutes les 100 ms
+        var clock = setInterval(sendCmd, 100);
+        
+        //récupération du pseudo du joueur adverse
+        socket.on("joueur", function(message) {
+          document.getElementById("nom_j2").innerHTML = message;
+        });
 
-         /**********************************
+        /**********************************
          GESTION DE LA DESCENTE DU TETROMINO
          ***********************************/
-        socket.on('moove', function(message) {
-          val = message.split(' ');
-          //console.log("--------",y+","+x);
-          console.log(message)
+        //réception du message qui indique de déplacer le tetromino
+        socket.on("moove", function(message) {
+          val = message.split(" ");
           /* efface le tétromino de la position précédente*/
-          document.getElementById(y+","+x).style.backgroundColor = "black";
-          document.getElementById(y2+","+x2).style.backgroundColor = "black";
-          document.getElementById(y3+","+x3).style.backgroundColor = "black";
-          document.getElementById(y4+","+x4).style.backgroundColor = "black";
-          
+          document.getElementById(y + "," + x).style.backgroundColor = "black";
+          document.getElementById(y2 + "," + x2).style.backgroundColor = "black";
+          document.getElementById(y3 + "," + x3).style.backgroundColor = "black";
+          document.getElementById(y4 + "," + x4).style.backgroundColor = "black";
+          //affectation des nouvelles coordonées
           x = Number(val[0]);
           y = Number(val[1]);
           x2 = Number(val[2]);
@@ -124,134 +219,93 @@
           y3 = Number(val[5]);
           x4 = Number(val[6]);
           y4 = Number(val[7]);
-          //console.log(x,y,x2,y2);
-          
+
           /* affiche le téromino à la position suivante*/
-          document.getElementById(y+","+x).style.backgroundColor = "red";
-          document.getElementById(y2+","+x2).style.backgroundColor = "red";
-          document.getElementById(y3+","+x3).style.backgroundColor = "red";
-          document.getElementById(y4+","+x4).style.backgroundColor = "red";
-        });
-        socket.on('moove2', function(message) {
-          val = message.split(' ');
-          //console.log("--------",y+","+x);
-          console.log(message)
-          /* efface le tétromino de la position précédente*/
-          document.getElementById(y+","+x).style.backgroundColor = "black";
-          document.getElementById(y2+","+x2).style.backgroundColor = "black";
-          document.getElementById(y3+","+x3).style.backgroundColor = "black";
-          document.getElementById(y4+","+x4).style.backgroundColor = "black";
-          
-          x = Number(val[0]);
-          y = Number(val[1]);
-          x2 = Number(val[2]);
-          y2 = Number(val[3]);
-          x3 = Number(val[4]);
-          y3 = Number(val[5]);
-          x4 = Number(val[6]);
-          y4 = Number(val[7]);
-          //console.log(x,y,x2,y2);
-          
-          /* affiche le téromino à la position suivante*/
-          document.getElementById(y+","+x).style.backgroundColor = "red";
-          document.getElementById(y2+","+x2).style.backgroundColor = "red";
-          document.getElementById(y3+","+x3).style.backgroundColor = "red";
-          document.getElementById(y4+","+x4).style.backgroundColor = "red";
+          document.getElementById(y + "," + x).style.backgroundColor = val[8];
+          document.getElementById(y2 + "," + x2).style.backgroundColor = val[8];
+          document.getElementById(y3 + "," + x3).style.backgroundColor = val[8];
+          document.getElementById(y4 + "," + x4).style.backgroundColor = val[8];
         });
         
+        //reception du message qui indique de déplacer le tetromino adverse
+        socket.on("moove2", function(message) {
+          val = message.split(" ");
+          /* efface le tétromino de la position précédente*/
+          document.getElementById(y21 + "+" + x21).style.backgroundColor = "black";
+          document.getElementById(y22 + "+" + x22).style.backgroundColor = "black";
+          document.getElementById(y23 + "+" + x23).style.backgroundColor = "black";
+          document.getElementById(y24 + "+" + x24).style.backgroundColor = "black";
+          //affectation des nouvelles coordonées
+          x21 = Number(val[0]);
+          y21 = Number(val[1]);
+          x22 = Number(val[2]);
+          y22 = Number(val[3]);
+          x23 = Number(val[4]);
+          y23 = Number(val[5]);
+          x24 = Number(val[6]);
+          y24 = Number(val[7]);
+
+          /* affiche le téromino à la position suivante*/
+          document.getElementById(y21 + "+" + x21).style.backgroundColor = val[8];
+          document.getElementById(y22 + "+" + x22).style.backgroundColor = val[8];
+          document.getElementById(y23 + "+" + x23).style.backgroundColor = val[8];
+          document.getElementById(y24 + "+" + x24).style.backgroundColor = val[8];
+        });
+
         /*******************************
          GESTION DE L'ARRET DU TETROMINO 
          *******************************/
-        socket.on('lock', function(message) {
-          //console.log("lock");
-          
-          /* changement de la couleur du tetromino*/
-          document.getElementById(y+","+x).style.backgroundColor = "blue";
-          document.getElementById(y2+","+x2).style.backgroundColor = "blue";
-          document.getElementById(y3+","+x3).style.backgroundColor = "blue";
-          document.getElementById(y4+","+x4).style.backgroundColor = "blue";
-          //console.log("lock",x,y,x2,y2,x3,y3,x4,y4)
-          
-          /* réinitialisation des variables*/
-          x = 0;
-          y = 0;
-          x2 = 0;
-          y2 = 0;
-          x3 = 0;
-          y3 = 0;
-          x4 = 0;
-          y4 = 0;
-        });
-        socket.on('lock2', function(message) {
-          //console.log("lock");
-          
-          /* changement de la couleur du tetromino*/
-          document.getElementById(y+","+x).style.backgroundColor = "blue";
-          document.getElementById(y2+","+x2).style.backgroundColor = "blue";
-          document.getElementById(y3+","+x3).style.backgroundColor = "blue";
-          document.getElementById(y4+","+x4).style.backgroundColor = "blue";
-          //console.log("lock",x,y,x2,y2,x3,y3,x4,y4)
-          
-          /* réinitialisation des variables*/
-          x = 0;
-          y = 0;
-          x2 = 0;
-          y2 = 0;
-          x3 = 0;
-          y3 = 0;
-          x4 = 0;
-          y4 = 0;
-        });
+        //réinitialise la position du tetromino
+        socket.on("lock", function(message) {
 
+          /* réinitialisation des variables*/
+          x = 0;
+          y = 0;
+          x2 = 0;
+          y2 = 0;
+          x3 = 0;
+          y3 = 0;
+          x4 = 0;
+          y4 = 0;
+        });
+        //réinitialise la position du tetromino adverse
+        socket.on("lock2", function(message) {
+          /* réinitialisation des variables*/
+          x21 = 0;
+          y21 = 0;
+          x22 = 0;
+          y22 = 0;
+          x23 = 0;
+          y23 = 0;
+          x24 = 0;
+          y24 = 0;
+        });
+        
         /**************************************************
          GESTION DE LA SUPRESSION D'UNE ou PLUSIEURS LIGNES
          **************************************************/
-        socket.on('supp', function(message) {
-          //console.log("supp",message);
-          
-           /* supression de la ligne*/
-          for(var p=1;p<message[0]+1;p++) {  
-            x = message[p];
-            //console.log("eff " +x+message[1]);
-            for(var i=9; i>=0; i--) {
-              for(var j=x; j>=0; j--) {
-                if(j != 0) {
-                  document.getElementById(j+","+i).style.backgroundColor = document.getElementById(j-1+","+i).style.backgroundColor;    
-                }
+        //reception du message qui indique de suprimer une ou plusieurs lignes
+        socket.on("supp", function(message) {
+          var score = 0;
+          score = parseInt(sessionStorage.score);
+          /* supression de la ligne*/
+          for (var p = 1; p < message[0] + 1; p++) {
+            val = message[p];
+            score = score + 1;
+            scoreP = scoreP + 1;
+            for (var i = 9; i >= 0; i--) 
+            {
+              for (var j = val; j >= 0; j--) 
+              {
+                if (j != 0) {
+                  document.getElementById(j + "," + i).style.backgroundColor = document.getElementById(j - 1 + "," + i).style.backgroundColor;
+                } 
                 else {
-                  document.getElementById(j+","+i).style.backgroundColor = "black";
+                  document.getElementById(j + "," + i).style.backgroundColor = "black";
                 }
-              } 
+              }
             }
           }
-            /* Modification du score */
-            var score = 0;    
-            score = parseInt(sessionStorage.score);
-            score = score+1;
-            sessionStorage.score = score;
-            scoreP = scoreP+1;
-            document.getElementById("scoreP").innerHTML = scoreP;
-            document.getElementById("scoreT").innerHTML = sessionStorage.score;
-          });
-          socket.on('supp2', function(message) {
-          //console.log("supp",message);
-          
-           /* supression de la ligne*/
-          for(var p=1;p<message[0]+1;p++) {  
-            x = message[p];
-            //console.log("eff " +x+message[1]);
-            for(var i=9; i>=0; i--) {
-              for(var j=x; j>=0; j--) {
-                if(j != 0) {
-                  document.getElementById(j+","+i).style.backgroundColor = document.getElementById(j-1+","+i).style.backgroundColor;    
-                }
-                else {
-                  document.getElementById(j+","+i).style.backgroundColor = "black";
-                }
-              } 
-            }
-          }
-          /* réinitialisation des variables*/
           x = 0;
           y = 0;
           x2 = 0;
@@ -260,60 +314,200 @@
           y3 = 0;
           x4 = 0;
           y4 = 0;
+          /* Modification du score */
+
+          sessionStorage.score = score;
+          document.getElementById("scoreP").innerHTML = scoreP;
+          document.getElementById("scoreT").innerHTML = sessionStorage.score;
+        });
+        
+        //reception du message qui indique de suprimer une ou plusieurs lignes adverse
+        socket.on("supp2", function(message) 
+        {
+          /* supression de la ligne*/
+          for (var p = 1; p < message[0] + 1; p++) 
+          {
+            val = message[p];
+            scoreP2 = scoreP2 + 1;
+            for (var i = 9; i >= 0; i--) 
+            {
+              for (var j = val; j >= 0; j--) 
+              {
+                if (j != 0) {
+                  document.getElementById(j + "+" + i).style.backgroundColor = document.getElementById(j - 1 + "+" + i).style.backgroundColor;
+                } 
+                else 
+                {
+                  document.getElementById(j + "+" + i).style.backgroundColor = "black";
+                }
+              }
+            }
+          }
+          /* réinitialisation des variables*/
+          x21 = 0;
+          y21 = 0;
+          x22 = 0;
+          y22 = 0;
+          x23 = 0;
+          y23 = 0;
+          x24 = 0;
+          y24 = 0;
+
+          document.getElementById("scoreP_j2").innerHTML = scoreP2;
+        });
+        
+        //reception du message qui indique d'ajouter une une plusieurs lignes de malus
+        socket.on('attaque',function(message)
+        {
+          document.getElementById(y21 + "," + x21).style.backgroundColor = "black";
+          document.getElementById(y22 + "," + x22).style.backgroundColor = "black";
+          document.getElementById(y23 + "," + x23).style.backgroundColor = "black";
+          document.getElementById(y24 + "," + x24).style.backgroundColor = "black";
+          val = message.split(' ');
+          var contL = 0;
+          while(contL<val.length-1)
+          {
+            contL = contL+1;
+            for(var i=0; i<10; i++)//remonté de toutes les valeurs
+            {
+              for(var j=0; j<20; j++)
+              {      
+                if(j != 19)
+                {
+                  document.getElementById(j + "," + i).style.backgroundColor = document.getElementById(j + 1 + "," + i).style.backgroundColor;
+                }
+                else
+                {
+                  document.getElementById(j + "," + i).style.backgroundColor = "grey" 
+                }
+              }
+            }
+            document.getElementById(19 + "," + val[contL]).style.backgroundColor = "black"
+            console.log(20-contL,val[contL])
+          }
+        });
+        
+        //reception du message qui indique d'ajouter une une plusieurs lignes de malus à l'adversaire
+        socket.on('attaque2', function(message)
+        {
+          document.getElementById(y21 + "+" + x21).style.backgroundColor = "black";
+          document.getElementById(y22 + "+" + x22).style.backgroundColor = "black";
+          document.getElementById(y23 + "+" + x23).style.backgroundColor = "black";
+          document.getElementById(y24 + "+" + x24).style.backgroundColor = "black";
+          val = message.split(' ');
+          var contL = 0;
+          while(contL<val.length-1)
+          {
+            contL = contL+1;
+            for(var i=0; i<10; i++)//remonté de toutes les valeurs
+            {
+              for(var j=0; j<20; j++)
+              {      
+                if(j != 19)
+                {
+                  document.getElementById(j + "+" + i).style.backgroundColor = document.getElementById(j + 1 + "+" + i).style.backgroundColor;
+                }
+                else
+                {
+                  document.getElementById(j + "+" + i).style.backgroundColor = "grey" 
+                }
+              }
+            }
+            document.getElementById(19 + "+" + val[contL]).style.backgroundColor = "black"
+          }
+        });
+        
+         /*******************************
+         Visibilité du tetromino suivant
+         *******************************/
+        //reception du message qui permet d'afficher le tetromino suivant
+        socket.on ('suiv',function(message) {
+          val = message.split(' ');
+          /* efface le tétromino de la position précédente*/
+          var i, j;
+          //génération d'une grille de 20 case de haut et 10 cases de large
+          for (i=0;i<4; i++){
+            for (j=0;j<4;j++){
+             document.getElementById(i+";"+j).style.backgroundColor = "black";
+            }
+          }
+
+          /* affiche le téromino à la position suivante*/
+          document.getElementById(Number(val[1])+";"+Number(val[0]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[3])+";"+Number(val[2]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[5])+";"+Number(val[4]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[7])+";"+Number(val[6]-3)).style.backgroundColor = "red";
+          
         });
         
         /***************************
          GESTION DE LA FIN DE PARTIE
          ***************************/
-        socket.on('GameOver',function(message) {
+        //recetion du message de game over
+        socket.on("GameOver", function(message) {
           /* modification de l'affichage*/
-          document.getElementById("gameover").innerHTML = "<h1> Game Over <\h1> <a href='jeu.html' id = 'retourmenu' >Accueil</a>";
-          document.getElementById("retourmenu").setAttribute("href", "/jeu");
-          /* mise à jour de la base de donnée*/
-          saveStats();
+          if (message == "solo") {
+            document.getElementById("Fin").style.background = "black";
+            document.getElementById("gameover").innerHTML = "<h1> Game Over ! <\h1>"
+            document.getElementById("retour").innerHTML = " <a href='jeu.html' id = 'retourmenu' >Accueil</a>";
+            document.getElementById("retourmenu").setAttribute("href", "/jeu");
+            saveStats("solo");
+          } else if (message == "defaite") {
+            document.getElementById("Fin").style.background = "black";
+            document.getElementById("gameover").innerHTML = "<h1> Game Over ! Vous avez perdu !<\h1>";
+            document.getElementById("retour").innerHTML = " <a href='jeu.html' id = 'retourmenu' >Accueil</a> ";
+            document.getElementById("retourmenu").setAttribute("href", "/jeu");
+            sessionStorage.setItem("defaite", 1);
+            sessionStorage.setItem("victoire", 0);
+          }
+
           /* arret du socket*/
           clearInterval(clock);
-          socket.disconnect();
         });
-        socket.on('GameOver2',function(message) {
+        socket.on("GameOver2", function(message) {
+          //victoire
           /* modification de l'affichage*/
-          document.getElementById("gameover").innerHTML = "<h1> Game Over <\h1> <a href='jeu.html' id = 'retourmenu' >Accueil</a>";
+          document.getElementById("Fin").style.background = "black";
+          document.getElementById("gameover").innerHTML ="<h1> Game Over ! Vous avez gagné !<\h1>"
+          document.getElementById("retour").innerHTML =" <a href='jeu.html' id = 'retourmenu' >Accueil</a>";
           document.getElementById("retourmenu").setAttribute("href", "/jeu");
-          /* mise à jour de la base de donnée*/
-          /* arret du socket*/
+          sessionStorage.setItem("defaite", 0);
+          sessionStorage.setItem("victoire", 1);
+          //arret de l'envoie des commande 
           clearInterval(clock);
-          socket.disconnect();
-        });
+       });
+
+       //reception du message qui previent de l'arret du jeu coté aversaire (abandon ou deconection)
+        socket.on("abandonAdverse", function(message) {
+            document.getElementById("abandoninfo").innerHTML = "<h3> Le joueur adverse a quitté la partie </h3>";
+        });  
         
         /******************
          Fonction utilisées  
          ******************/
-        
-        /*fonctions pour envoyer lacomande au serveur*/
+
+        /*fonctions pour envoyer la omande au serveur*/
         function sendCmd() {
-          if(CMDsend != null) {
-            socket.emit('cmd',CMDsend)  
+          if (CMDsend != null) {
+            socket.emit("cmd", CMDsend);
           }
           CMDsend = null;
-        };
-        
+        }
+
         function cmd(dir) {
           CMDsend = dir;
-        };
+        }
 
-        /* fonction utiliser pour enregistre le nouveau score total dans la BD (requête au serveur)*/
-        function saveStats() {
-          const data = {"type": "save_stats",
-                        "username": sessionStorage.username,
-                        "scoreT": sessionStorage.score}
-          socket.emit('gestion', JSON.stringify(data));
-        };
+        /* Check de l'état par le serveur */
+        socket.on("check", e => {
+          const data = { nom: sessionStorage.username };
+          socket.emit("check", JSON.stringify(data));
+        });
       </script>
-      
     </div>
     <!-- Bas de page -->
-    <div id = "footer">
-      <h2> Site réalisé pour le projet AWS UVSQ 2020 </h2>
+    <div id="footer">
+      <h2>Tetris Battle! - Site réalisé pour le projet AWS UVSQ 2020</h2>
     </div>
   </body>
 </html>

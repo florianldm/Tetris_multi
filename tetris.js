@@ -11,10 +11,54 @@ function setTetromino(tetromino,x1,x2,x3,x4,y1,y2,y3,y4)
   tetromino.y4 = y4
 }
 
+function saveStats(db,username,score,result = -1) {
+  var scoreDEB = 0;
+  //récupération du score du joueur dans la BD
+  db.get('SELECT score FROM Joueur WHERE username = ?', ["tanguy"], (err, row) => {
+    // Si il y a une erreur
+    if(err) {
+      console.error(err.message);
+    }
+    else if(row) {
+      score = score+row.score;
+      save(db,username,score,result);
+    }
+  });
+}
+
+function save(db,username,score,result = -1) {
+    db.run("UPDATE Joueur SET score = ? WHERE username = ?", [score, username] ,(err) => {
+        if(err){
+          console.error(err.message);
+        }else{
+        } 
+    });
+  if(result != -1) {
+    if(result == 1){
+      db.run("UPDATE Joueur SET victories = victories + 1 WHERE username = ?", [username] ,(err) => {
+        if(err){
+          console.error(err.message);
+        }else{
+        } 
+      });
+    }
+    else if(result == 0) {
+      db.run("UPDATE Joueur SET defeats = defeats + 1 WHERE username = ?", [username] ,(err) => {
+        if(err){
+          console.error(err.message);
+        }else{
+        } 
+      });
+    }
+  }
+  
+}
+
+//fonction qui renvoie la couleur d'un tetromino en fonction de son type
 function getColor(type)
 {
-  if(type == 'I') return "cyan";
-  else if(type == 'O') return "yellow";
+  if(type == 'I') return "aqua";
+  else if(type == 'O') return "gold";
   else if(type == 'T') return "purple";
   else if(type == 'L') return "orange";
   else if(type == 'J') return "Blue";
@@ -27,37 +71,37 @@ function initTetromino(tetromino,type)
 {
   if(type == "O")
   {
-    setTetromino(tetromino,0,0,1,1,0,1,0,1);
+    setTetromino(tetromino,4,4,5,5,0,1,0,1);
     tetromino.type = 'O'
   }
   else if(type == "I")
   {
-    setTetromino(tetromino,0,1,2,3,0,0,0,0);
+    setTetromino(tetromino,3,4,5,6,0,0,0,0);
     tetromino.type = 'I'
   }
   else if(type == "T")
   {
-    setTetromino(tetromino,0,1,2,1,0,0,0,1);
+    setTetromino(tetromino,3,4,5,4,0,0,0,1);
     tetromino.type = 'T'
   }
   else if(type == "L")
   {
-    setTetromino(tetromino,0,1,2,0,0,0,0,1);
+    setTetromino(tetromino,3,4,5,3,0,0,0,1);
     tetromino.type = 'L'
   }
   else if(type == "J")
   {
-    setTetromino(tetromino,0,1,2,2,0,0,0,1);
+    setTetromino(tetromino,3,4,5,5,0,0,0,1);
     tetromino.type = 'J'
   }
   else if(type == "Z")
   {
-    setTetromino(tetromino,0,1,1,2,0,0,1,1);
+    setTetromino(tetromino,3,4,4,5,0,0,1,1);
     tetromino.type = 'Z'
   }
   else if(type == "S")
   {
-    setTetromino(tetromino,2,1,1,0,0,0,1,1);
+    setTetromino(tetromino,5,4,4,3,0,0,1,1);
     tetromino.type = 'S'
   }
   tetromino.dir = 0;
@@ -243,6 +287,7 @@ function randTetromino()
   else return 'S';
 }
 
+//fonction qui interprète une action d'un joueur
 function action(socket,tab,tetromino,input,socket2 = null)
 {
    if(input.get(socket.id) != 0)
@@ -288,6 +333,7 @@ function action(socket,tab,tetromino,input,socket2 = null)
   return tetromino;
 }
 
+//copie d'un tetromino
 function Cpytetro(tetro,suiv)
 {
   tetro.x1 = suiv.x1;
@@ -299,9 +345,11 @@ function Cpytetro(tetro,suiv)
   tetro.y3 = suiv.y3;
   tetro.y4 = suiv.y4;
   tetro.type = suiv.type;
+  tetro.dir = 0;
   return tetro;
 }
 
+//fonction qui gère la déscente d'un tetromino, verifie si des lignes sont 
 function down(socket,tab,tetromino,input,suiv,score,socket2 = null)
 {
   // déscente du bloc
@@ -335,6 +383,7 @@ function down(socket,tab,tetromino,input,suiv,score,socket2 = null)
     var i;
     var sum = 0;
     var sup = [];
+    var end = 0;
     sup.push(0); 
     //test de toute les lignes pour savoir, si elle sont complète 
     while(contL < ligneUT.length) 
@@ -342,9 +391,7 @@ function down(socket,tab,tetromino,input,suiv,score,socket2 = null)
       for(var i=0;i<10;i++)//calcul de la somme de la ligne
       { 
         sum = tab[i][ligneUT[contL]] + sum;
-        //console.log(tab);
       } 
-      //console.log("----------------",contL,sum,tetromino.type);
       if(sum == 100)//si somme est égale à 90, alors la ligne est compléte et elle peut être supprimée
       {
         score = score + 1;
@@ -375,17 +422,29 @@ function down(socket,tab,tetromino,input,suiv,score,socket2 = null)
     }
     tetromino = Cpytetro(tetromino,suiv);
     initTetromino(suiv,randTetromino());
+    socket.emit('moove',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+getColor(tetromino.type));
+    if(socket2 != null){socket2.emit('moove2',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+getColor(tetromino.type));}
     //envoi du tetromino suivant // ajouter un emit
     socket.emit('suiv',suiv.x1+" "+suiv.y1+" "+suiv.x2+" "+suiv.y2+" "+suiv.x3+" "+suiv.y3+" "+suiv.x4+" "+suiv.y4);
     //initTetromino(tetromino,"T");
     if(!emplacementValide(tetromino,tab))
     {
-      console.log("Game Over",tetromino.type)
-      socket.emit('GameOver','')
-      if(socket2 != null){socket2.emit('GameOver2','')}
+      if(socket2 == null)
+      { 
+        socket.emit('moove',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+"gray");
+        socket.emit('GameOver','solo');
+      }
+      else if(socket2 != null)
+      { 
+        socket.emit('moove',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+"gray");
+        if(socket2 != null){socket2.emit('moove2',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+"gray");}
+        socket.emit('GameOver','defaite'); 
+        socket2.emit('GameOver2','victoire')
+      }
+      end = 1;
     }
   }
-  return tetromino;
+  return [tetromino,score,end];
 }
 
 
@@ -393,3 +452,6 @@ exports.down = down;
 exports.action = action;
 exports.initTetromino = initTetromino;
 exports.randTetromino = randTetromino;
+exports.saveStats = saveStats;
+exports.getColor = getColor;
+exports.emplacementValide = emplacementValide;

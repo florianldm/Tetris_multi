@@ -4,12 +4,14 @@ Ajout et initialisation des modules et des variables globales
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
-const ws = require("ws"); 
+const ws = require("ws");
 const sqlite3 = require("sqlite3").verbose();
 const http = require("http");
-const t2j = require("./tetris2Joueurs"); 
+const t2j = require("./tetris2Joueurs");
+const bcrypt = require("bcrypt");
 
-
+// Nombre d'iteration qu'on applique sur le mot de passe avec le sel
+const saltRounds = 10;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,7 +22,8 @@ app.use(express.static("public"));
 /*******************
 GESTION DES SESSIONS
 *******************/
-var connected_users = {};
+var connected_users = {}; //liste des connectés
+var connected_user2 = []; //liste des connectés qui ont répondu au check du serveur
 
 class User {
   constructor(name) {
@@ -54,7 +57,7 @@ io.sockets.on('connection', function (socket)
     socket.on('OnePlayer', function(message)
     {
       console.log("start")
-       ttr1.OnePlayer(socket,input);
+       ttr1.OnePlayer(socket,input,db,message);
     });
     
     socket.on('2Player', function(message)
@@ -72,9 +75,10 @@ io.sockets.on('connection', function (socket)
       }
     });
   
+    //reception des messages pour la gestion
     socket.on('gestion',function (data)
     {
-          data = JSON.parse(data);
+        data = JSON.parse(data);
         console.log("Websocket reçu de type : " + data.type);
 
         // Gestion de l'inscription
@@ -95,8 +99,8 @@ io.sockets.on('connection', function (socket)
         //Gestion demande de statistiques
         else if(data.type == 'stats') {
           getStatsBD(data, socket);
-          console.log(socket.id);
         }
+        //Gestion de l'ajout d'amis
          else if(data.type == 'ami') {
           addFriend(data, socket);
         }
@@ -104,17 +108,24 @@ io.sockets.on('connection', function (socket)
         else if(data.type == "liste_joueurs") {
           getFriends(data, socket);
         }
+        //Gestion des invitations
         else if (data.type == "invite") {
           sendInvite(data, socket);
         }
         else if (data.type == "save_stats") {
-          saveStats(data, socket);
+        //   saveStats(data, socket);
         }
+        //Gestion du classement
         else if (data.type == "classement") {
           getRank(data, socket);
         }
+        //Gestion de l'acceptation d'une invitation
         else if (data.type == "invite_acceptee") {
           creation_1v1(data, socket);
+        }
+        //Gestion des comparaisons ami-ami
+        else if(data.type == "compare") {
+          compareStats(data, socket);
         }
 
         // Si le type est inconnu
@@ -123,6 +134,7 @@ io.sockets.on('connection', function (socket)
         }
       });
   
+    //reception des commandes de jeu
     socket.on('cmd', function(message) 
     {
       if(message == 'bas')
@@ -143,10 +155,19 @@ io.sockets.on('connection', function (socket)
       }
     });
   
+    //reception demande de déconnexion
     socket.on('disconnect', function()
     {
       console.log(input.delete(socket.id));   
     }); 
+  
+    ////reçu des messages de présence des clients
+    socket.on('check', function (data) 
+    {
+        data = JSON.parse(data);
+        //console.log("Message Check reçu de : " + data.nom);
+        receiveState(data, socket);
+    });
     
 });  
 
@@ -175,8 +196,7 @@ const sql_create_table2 = `create table if not exists Ami
                           constraint fk_username1 foreign key(username1) references Joueur(username),
                           constraint fk_username2 foreign key(username2) references Joueur(username))`;
 const sql_insert_joueur = "insert into Joueur values(?, ?, 0, 0, 0)";
-const sql_select_usr = "select username from Joueur where username = ?";
-const sql_select_usr_psw = "select username, password from Joueur where username = ? and password = ?";
+const sql_select_usr = "select username, password from Joueur where username = ?";
 
 // Ouverture de la base de données
 const db = new sqlite3.Database(dbFile, err => {
@@ -222,8 +242,10 @@ function bddInscription(data, socket) {
       socket.emit('log',JSON.stringify(answer));
     }
     // Si le username n'existe pas
-    else { 
-      addUserBdd(data.username, data.password); 
+    else {
+      bcrypt.hash(data.password, saltRounds, (err, hash) => {
+        addUserBdd(data.username, hash);
+      })
       console.log("Inscription reussie");
       let answer = {"type": "reponse_inscription",
                     "answer": "succes",
@@ -237,20 +259,36 @@ function bddInscription(data, socket) {
 // Fonction veriant que l'utilisateur existe et que son mot de passe correspond. Si c'est
 // le cas, la fonction renvoit une reponse de succes et ajoute l'utilisateur au utilisateur connecté
 function bddConnexion(data, socket) {
-  db.get(sql_select_usr_psw, [data.username, data.password], (err, row) => {
+  var testconnexion = 0;
+  db.get(sql_select_usr, [data.username], (err, row) => {
     // Si il y a une erreur
     if(err) console.error(err.message);
     // Si le tuple existe
     else if(row) {
-      console.log("Connexion reussi");
-      let answer = {"type": "reponse_connexion",
+      bcrypt.compare(data.password, row.password, (err, result) => {
+        // Si les mots de passe sont les mêmes
+        for(var i in connected_users){
+          if(data.username == i) testconnexion = 1;
+        }
+        if(result == true && testconnexion == 0) {
+          console.log("Connexion reussi");
+          let answer = {"type": "reponse_connexion",
                     "answer": "succes",
                     "username": data.username};
-      socket.emit('log',JSON.stringify(answer));
-      test = data.username;
-      connected_users[data.username] = new User(data.username);
-      SocketPseudo.set(data.username,socket);
-      printConnectedUser();
+          socket.emit('log',JSON.stringify(answer));
+          connected_users[data.username] = new User(data.username);
+          SocketPseudo.set(data.username,socket);
+          printConnectedUser();
+        }
+        // Si ils sont différents
+        else {
+          console.log("connexion échoué");
+          let answer = {"type": "reponse_connexion",
+                    "answer": "echec",
+                    "username": data.username};
+          socket.emit('log',JSON.stringify(answer));
+        }
+      })
     }
     // Si le tuple n'existe pas
     else {
@@ -326,7 +364,7 @@ function getFriends(data, socket) {
       //Regarde qui est connecté parmi les amis
       for(let i in connected_users) {
         for(let j in liste_amis){
-          console.log("- " + connected_users[i].name);
+          //console.log("- " + connected_users[i].name);
           if(liste_amis[j] == connected_users[i].name){
             liste_amis_connect.push(liste_amis[j]);
           }
@@ -353,58 +391,63 @@ function getFriends(data, socket) {
   });
 }
 
+//Vérification ami déjà dans la liste d'amis (pour l'ajout d'amis)
+//Appelée dans addFriend() ci-dessous
+function verifDejaAmi(data, socket){
+  var ok = 0;
+  db.get('SELECT * FROM Ami WHERE (username1 = ? AND username2 = ?) OR (username1 = ? AND username2 = ?)', [data.friend, data.username, data.username, data.friend], (err2, row2) => {
+      // empeche ami1 est ami avec ami2 et ami2 est ami avec ami1 possible dans la bd
+      if(err2) console.error(err2.message);
+      else if(row2) {
+          ok = 1;
+          //console.log("TROUVEEFFF");
+      }
+      if(ok == 1){
+        console.log("Amis déjà amis!");
+        let answer = {"type": "reponse_ajout_ami",
+                      "answer": "echec",
+                      "username": data.username,
+                      "friend": data.friend};
+        socket.emit('log',JSON.stringify(answer));
+      }
+      else if (ok == 0){
+          //console.log("CEST OK");
+          let answer = {"type": "reponse_ajout_ami",
+                        "answer": "succes",
+                        "username": data.username,
+                        "friend": data.friend};
+                db.run('INSERT INTO Ami (username1, username2, victories1, victories2) VALUES (?,?,?,?)', [data.username, data.friend, 0, 0] ,(err) => {
+                  if(err){
+                    console.error(err.message);
+                  }else{
+                    console.log(`Ajout du Joueur ${data.friend}, ami avec ${data.username}`);
+                    socket.emit('log',JSON.stringify(answer));
+                  } 
+                });
+     }
+  });
+}
 
 /** Ajout d'un ami */
 function addFriend(data, socket) {
   var insert = 0;
   var ok = 0;
   if(data.username != data.friend){
-    db.get('SELECT * FROM Joueur WHERE username = ?', [data.friend], (err, row) => {
-      // Regarde si ami existe
-      db.get('SELECT * FROM Ami WHERE username1 = ? AND username2 = ?', [data.friend, data.username], (err2, row2) => {
-      // empeche ami1 est ami avec ami2 et ami2 est ami avec ami1 possible dans la bd
-        if(err2) console.error(err.message);
-        else if(row2) ok = 1;
-      });
-      if(ok == 1){ //empeche ami1 est ami avec ami2 et ami2 est ami avec ami1 possible dans la bd
-        console.log("Amis déjà amis!");
-          let answer = {"type": "reponse_ajout_ami",
-                        "answer": "echec",
-                        "username": data.username,
-                        "friend": data.friend};
-          socket.emit('log',JSON.stringify(answer));
-      }
-      else{
-        if(err) {
-          console.error(err.message);
-        }
-        else if(row) {
-          let answer = {"type": "reponse_ajout_ami",
-                        "answer": "succes",
-                        "username": data.username,
-                        "friend": data.friend};
-          db.run('INSERT INTO Ami (username1, username2, victories1, victories2) VALUES (?,?,?,?)', [data.username, data.friend, 0, 0] ,(err) => {
-            if(err){
+        db.get('SELECT * FROM Joueur WHERE username = ?', [data.friend], (err, row) => {
+          // Regarde si ami existe
+            if(err) {
               console.error(err.message);
-            }else{
-              console.log(`Ajout du Joueur ${data.friend}, ami avec ${data.username}`);
+            }else if(row) verifDejaAmi(data, socket); //empeche ami1 est ami avec ami2 et ami2 est ami avec ami1 possible dans la bd     
+            // Si le username n'existe pas
+            else{ 
+              console.log("Utilisateur inexistant");
+              let answer = {"type": "reponse_ajout_ami",
+                            "answer": "echec",
+                            "username": data.username,
+                            "friend": data.friend};
               socket.emit('log',JSON.stringify(answer));
-              insert = 1;
-            } 
-          });
-
-        }
-        // Si le username n'existe pas
-        else if(insert == 0){ 
-          console.log("Utilisateur inexistant");
-          let answer = {"type": "reponse_ajout_ami",
-                        "answer": "echec",
-                        "username": data.username,
-                        "friend": data.friend};
-          socket.emit('log',JSON.stringify(answer));
-        }
-      }
-    });
+            }
+        });
   }else{ //Si le joueur veut être ami avec lui-même
      console.log("Utilisateur inexistant");
     let answer = {"type": "reponse_ajout_ami",
@@ -419,15 +462,6 @@ function sendInvite(data, socket) {
   socket.to(SocketPseudo.get(data.destinataire).id).emit('message', data.username);
 }
 
-function saveStats(data, socket) {
-  db.run("UPDATE Joueur SET score = ? WHERE username = ?", [data.scoreT, data.username] ,(err) => {
-        if(err){
-          console.error(err.message);
-        }else{
-          console.log(`Score de ${data.username} mis à jour: ${data.scoreT}`);
-        } 
-  });
-}
 
 //Récupération des amis pour le classement
 function getRank(data, socket) {
@@ -466,18 +500,96 @@ function getRank(data, socket) {
 //Lors de l'acceptation de l'invite, envoi d'un message au serveur pour appeler cette fonction qui va lancer la page pour les joueurs et initialiser le jeu sur le serveur.
 function creation_1v1(data, socket) {
   console.log("TESTINV: " + data.username + " " + data.inviteur);
-  t2j.TwoPlayer(data.username,data.inviteur,input,SocketPseudo);
+  t2j.TwoPlayer(db,data.username,data.inviteur,input,SocketPseudo);
   socket.emit('partieok', data.username);
   socket.to(SocketPseudo.get(data.inviteur).id).emit('partieok', data.inviteur);
+}
 
+
+//Récupère les informations statistiques du joueur demandeur et de l'ami demandé pour la comparaison
+function compareStats(data, socket) {
+  var liste = []; //liste de taille 2 (par la suite): infos joueur + ami
+
+  //Recherche d'une liaison d'amitié
+  db.all('SELECT * FROM Joueur WHERE username = ? OR username = ?', [data.username, data.ami], (err, row) => {
+    // Si il y a une erreur
+    if(err) {
+      console.error(err.message);
+    }
+    else if(row) {
+      //ajout du profil à la liste
+      row.forEach((row) => {
+        let profil = {"username": row.username,
+                      "score": row.score,
+                      "defeats": row.defeats,
+                      "victories": row.victories};
+        liste.push(profil);
+      });
+      
+      let answer = {"type": "reponse_compare",
+                      "answer": "succes",
+                      "liste_compare": liste};
+      socket.emit('log',JSON.stringify(answer));
+    }
+    // Si le username n'existe pas
+    else { 
+      console.log("Utilisateur inexistant");
+      let answer = {"type": "reponse_compare",
+                    "answer": "echec"};
+      socket.emit('log',JSON.stringify(answer));
+      //printAllJoueur();
+    }
+  });
+}
+
+//Envoie un message à tous les users connectés toutes les 2 minutes
+function checkState() {
+  var socket = undefined;
+  var test = 0;
+  connected_user2 = [];
+  for(let i in connected_users) {
+    try {
+      io.sockets.connected[SocketPseudo.get(connected_users[i].name).id].emit('check');
+    }
+    catch(error) {
+      console.error(error);
+    }
+    
+    console.log(connected_users[i].name);
+  }
+  setTimeout(function(){ //suppression des clients qui n'ont pas repondu de la liste des connectés
+        for(let j in connected_users) {
+          test = 0;
+          for(let k in connected_user2) {
+            if(connected_user2[k] == connected_users[j].name){
+              test = 1;
+            }
+          }
+          //console.log("boucle: "+connected_users[j].name + test);
+          if(test == 0) delete connected_users[connected_users[j].name];
+        }
+        //console.log("MAJ des clients connectes");
+  }, 1000);
+  setTimeout(checkState, 120000); //exécution toutes les 20 secondes
+}
+
+checkState();
+
+//construction de la liste des connectés qui ont répondu au check du serveur
+function receiveState(data, socket) {
+  //console.log("MSG RECU DE" + data.nom);
+  connected_user2.push(data.nom);
 }
 
 
 
-
-
 // Suppression des données de la table Joueur.
-/*db.run("delete from Joueur", (err) => {
+/*db.run("delete from Ami", (err) => {
+  if(err) console.error(err.message);
+  else console.log("Table Ami supprimé.")
+});
+// Suppression des données de la table Joueur.
+db.run("delete from Joueur", (err) => {
   if(err) console.error(err.message);
   else console.log("Table Joueur supprimé.")
 });*/
@@ -491,7 +603,7 @@ function creation_1v1(data, socket) {
 
 
 /**************
-GESTION DES GET
+GESTION DES GET : redirections
 **************/
 // Get /
 app.get("/", (req, res) => {
@@ -513,23 +625,26 @@ app.get("/jeu", (req, res) => {
   res.sendFile(`${__dirname}/views/jeu.html`);
 });
 
+//Get /tetrisUnJoueur
 app.get("/tetrisUnJoueur", (req, res) => {
   res.sendFile(`${__dirname}/views/tetrisUnJoueur.html`);
 });
 
+//Get /tetris2joueurs
 app.get("/tetris2joueurs", (req, res) => {
   res.sendFile(`${__dirname}/views/tetris2joueurs.html`);
 });
 
 
-/* Test
-db.run("UPDATE Joueur SET victories = 15, defeats = 7 WHERE username = ?", ["TestBD"] ,(err) => {
+/*
+db.run("DELETE FROM Joueur WHERE score = ?", ['0'] ,(err) => {
         if(err){
           console.error(err.message);
         }else{
           console.log('DACO');
         } 
   });
+
 */
 
 /****************************************

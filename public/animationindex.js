@@ -28,7 +28,7 @@
  //Fonction pour l'animation de la forme carré qui le fait descendre
   function carre(){
    if(topPos < 610){
-     if(topPos < 60 || topPos >  595){
+     if(topPos < 60 || topPos >  590){
        piece.style.visibility = "hidden"; //On cache la forme au tout départ et à la fin
      }
      else piece.style.visibility = " visible"; //sinon on la rend visible
@@ -44,7 +44,7 @@
  //Fonction pour l'animation de la forme en l qui le fait descendre (même principe que carré)
   function l(){
    if(topPos2 < 610){
-     if(topPos2 < 60 || topPos2 >  595){
+     if(topPos2 < 60 || topPos2 >  590){
        piece2.style.visibility = "hidden";
      }
      else piece2.style.visibility = " visible";
@@ -60,7 +60,7 @@
  //Fonction pour l'animation de la forme t qui le fait descendre (même principe que carré)
   function t(){
    if(topPos3 < 610){
-     if(topPos3 < 60 || topPos3 >  595){
+     if(topPos3 < 60 || topPos3 >  590){
        piece3.style.visibility = "hidden";
      }
      else piece3.style.visibility = " visible";
@@ -76,7 +76,7 @@
   //Fonction pour l'animation de la forme s qui le fait descendre (même principe que carré)
   function s(){
    if(topPos4 < 610){ 
-     if(topPos4 < 60 || topPos4 >  595){
+     if(topPos4 < 60 || topPos4 >  590){
        piece4.style.visibility = "hidden"; 
      }
      else piece4.style.visibility = " visible";
