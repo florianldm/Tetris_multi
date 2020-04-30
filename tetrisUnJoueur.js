@@ -1,20 +1,24 @@
 const ttr = require("./tetris.js")
 
 //fonction qui permet de gérer le rythme du jeu
-function clock(socket,tab,tetromino,cont,input,score,suiv)
+function clock(db,username,socket,tab,tetromino,cont,input,score,suiv)
 {
-  setTimeout(function(){jeu1Joueur(socket,tab,tetromino,cont,input,suiv);}, 100)
+  setTimeout(function(){jeu1Joueur(db,username,socket,tab,tetromino,cont,input,suiv,score);}, 100)
 }
 
 // fonction qui lance le tetris en mode 1 joueur
-function jeu1Joueur(socket,tab,tetromino,cont,input,suiv,score)
+function jeu1Joueur(db,username,socket,tab,tetromino,cont,input,suiv,score)
 {
-  if(cont <10)
+  var diff = score/5;
+  if(diff>= 10)
+  {
+    diff = 9;
+  }
+  if(cont <10-diff)
   {
   
     if(input.get(socket.id) == undefined)//si le socket n'existe plus, le joueur n'est plus connecté et le jeu s'arrète 
     {
-      console.log("exit")
        return 0; 
     }
     //aplication d'un input
@@ -22,17 +26,24 @@ function jeu1Joueur(socket,tab,tetromino,cont,input,suiv,score)
   }
   else
   {  
-    tetromino = ttr.down(socket,tab,tetromino,input,suiv,score)
+    var res = ttr.down(socket,tab,tetromino,input,suiv,score)
+    tetromino = res[0];
+    score = res[1];
+    var end = res[2];
+    if(end == 1)
+    {
+      ttr.saveStats(db,username,score)
+      return 0;    
+    }
     cont = 0;
   }
-  clock(socket,tab,tetromino,cont+1,input,score,suiv)//la clock de jeu est relancé
+  clock(db,username,socket,tab,tetromino,cont+1,input,score,suiv)//la clock de jeu est relancé
 }
 
 //fonction qui initialise le tetris 1  joueur
-function OnePlayer(socket,input)
+function OnePlayer(socket,input,db,username)
 {
   var score = 0;
-  console.log(socket.id);
   //création du tableau
   var tab = new Array()
   for(var i=0; i<10; i++)
@@ -47,7 +58,6 @@ function OnePlayer(socket,input)
         tab[i][j] = 0;
      } 
   } 
-  console.log(tab[0][0])
   
   // initialisation du tetromino
   var tetromino = 
@@ -76,11 +86,14 @@ function OnePlayer(socket,input)
     type: null,
     dir: 0
   }
+  //initialisation du nouveau tetromino
   ttr.initTetromino(tetromino,ttr.randTetromino());
   ttr.initTetromino(suiv,ttr.randTetromino())
-  //envoi du tetromino suivant // ajouter un emit
+  //envoi du nouveau tetromino et du tetromino suivant
   socket.emit('suiv',suiv.x1+" "+suiv.y1+" "+suiv.x2+" "+suiv.y2+" "+suiv.x3+" "+suiv.y3+" "+suiv.x4+" "+suiv.y4);
-  clock(socket,tab,tetromino,0,input,score,suiv);
+  socket.emit('moove',tetromino.x1+" "+tetromino.y1+" "+tetromino.x2+" "+tetromino.y2+" "+tetromino.x3+" "+tetromino.y3+" "+tetromino.x4+" "+tetromino.y4+" "+ttr.getColor(tetromino.type));
+  
+  clock(db,username,socket,tab,tetromino,0,input,0,suiv);
 }
 
 //permet la décomposition en plusieurs fichiers  (module)

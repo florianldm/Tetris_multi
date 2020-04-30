@@ -8,78 +8,87 @@
     <link rel="stylesheet" href="/style_jeu.css"> 
     <!-- import d'une police -->
     <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="https://cdn.glitch.com/c63ee89a-eee4-4191-88cf-e3f3ecdd00fd%2Ffavicon.png?v=1588178174851" />
   </head>
 
   <body>
     <div>
       <!--Titre de la page-->
       <h1>Tetris Battle!</h1>
-
-      <!-- taleau pour indiquer les informations sur le joueur -->
-      <table id = "Info">
-        <!-- nom du joueur -->
-        <tr>
-          <td>Player: </td> 
-          <script>document.write('<td >'+ sessionStorage.username+ ' </td>');</script>
-        </tr>
-         <!-- Score cumulatif de toutes les parties -->
-        <tr>
-          <td>Score: </td>
-          <td id ="scoreT">  </td>
-          <script>document.getElementById("scoreT").innerHTML = sessionStorage.score;</script>
-        </tr>
-         <!-- Score de la partie en cour -->
-        <tr>
-          <td>Score de la partie : </td> 
-          <td id="scoreP"> 0 </td>
-        </tr>  
-      </table>
-      
-      <div id ="tetromino-suiv">
-        <script>
-          document.write("<table id = 'tetromino' border= '1'>");
-          var i, j;
-          //génération d'une grille de 20 case de haut et 10 cases de large
-          for (i=0;i<4; i++){
-            document.write("<tr>");
-            for (j=0;j<4;j++){
-              document.write("<td id = 'test'></td>");
-              // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
-              document.getElementById("test").id = i+";"+j;
-            }
-
-            document.write("</tr>");
-          }
-          document.write("</table>");
-        </script>
-      </div>
-      
       <!-- section utilisé lors d'une défaite -->
       <div id = "Fin">
         <p id ="gameover"></p>
         <p id = "retour"></p>
       </div>
-      
-      
-      <!-- génération de la grille de jeu -->
-      <script>
-        document.write("<table id = 'grille' border= '1'>");
-        var i, j;
-        //génération d'une grille de 20 case de haut et 10 cases de large
-        for (i=0;i<20; i++){
-          document.write("<tr>");
-          for (j=0;j<10;j++){
-            document.write("<td id = 'test'></td>");
-            // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
-            document.getElementById("test").id = i+","+j;
-          }
+      <div id = "block-jeu">
+        <!-- taleau pour indiquer les informations sur le joueur -->
+        <table id = "tableau-jeu-solo" >
+        <tr>
+          <td><table id = "Info">
+            <!-- nom du joueur -->
+            <tr>
+              <td>Player: </td> 
+              <script>document.write('<td>'+ sessionStorage.username+ ' </td>');</script>
+            </tr>
+             <!-- Score cumulatif de toutes les parties -->
+            <tr>
+              <td>Score: </td>
+              <td id ="scoreT">  </td>
+              <script>document.getElementById("scoreT").innerHTML = sessionStorage.score;</script>
+            </tr>
+             <!-- Score de la partie en cour -->
+            <tr>
+              <td>Score de la partie : </td> 
+              <td id="scoreP"> 0 </td>
+            </tr>  
+          </table></td>
 
-          document.write("</tr>");
-        }
-        document.write("</table>");
-      </script>
+          <!-- génération de la grille de jeu -->
+          <td><script>
+            document.write("<table id = 'grille' border= '1'>");
+            var i, j;
+            //génération d'une grille de 20 case de haut et 10 cases de large
+            for (i=0;i<20; i++){
+              document.write("<tr>");
+              for (j=0;j<10;j++){
+                document.write("<td id = 'test'></td>");
+                // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
+                document.getElementById("test").id = i+","+j;
+              }
 
+              document.write("</tr>");
+            }
+            document.write("</table>");
+          </script></td>
+
+          <td><div id ="tetromino-suiv">
+            <script>
+              document.write("<table><tr><td> <div id = 'tetrosuiv'>Tetromino suivant:</div> </td></tr> <tr><td>");
+              document.write("<table id = 'tetromino' border= '1'>");
+              var i, j;
+              for (i=0;i<4; i++){
+                document.write("<tr>");
+                for (j=0;j<4;j++){
+                  document.write("<td id = 'test'></td>");
+                  // change l'id afin d'y mettre la position de la case sous forme (ligne,colone)
+                  document.getElementById("test").id = i+";"+j;
+                }
+
+                document.write("</tr>");
+              }
+              document.write("</table>");
+              document.write("</td></tr></table>");
+            </script>
+          </div></td>
+        </tr>
+      </table>
+      </div>
+      
+      <h3><a href="jeu.html" id ="abandon">Abandonner</a></h3>
+      
+    
+      
       <!-- interaction via clavier-->
       <script>
         
@@ -93,7 +102,13 @@
           else if(e.keyCode == 40) cmd('bas');
           
           else if(e.keyCode == 27) location.replace("jeu.html");
-          
+          switch(e.keyCode){
+            case 37:
+            case 38:
+            case 39:
+            case 40:
+	              e.preventDefault();
+          }
 
         });
       </script>
@@ -102,15 +117,17 @@
       <script src="/socket.io/socket.io.js"></script>
       <!-- script du déroulement de la partie -->
       <script>
+        //retour profil abandon
+        document.getElementById("abandon").setAttribute("href", "/jeu");
+        
         /***********************************
          CONNECTION AU SERVEUR VIA SOCKET.IO
         ************************************/
         
         var socket = io.connect('wss://' + window.location.host);
         socket.emit('setPseudo',sessionStorage.username);
-        //console.log("log")
-        socket.emit('OnePlayer',socket.id);
-        //console.log("pulse")
+        socket.emit('OnePlayer',sessionStorage.username);
+        
         
         /******************************************************
          INITIALISATION DES VARIABLES UTILISER DURANT LA PARTIE
@@ -130,9 +147,9 @@
          /**********************************
          GESTION DE LA DESCENTE DU TETROMINO
          ***********************************/
+        //reception du message qui permet de daplacer un tetromino
         socket.on('moove', function(message) {
           val = message.split(' ');
-          //console.log("--------",y+","+x);
           
           /* efface le tétromino de la position précédente*/
           document.getElementById(y+","+x).style.backgroundColor = "black";
@@ -140,6 +157,7 @@
           document.getElementById(y3+","+x3).style.backgroundColor = "black";
           document.getElementById(y4+","+x4).style.backgroundColor = "black";
           
+          //affectation des nouvelles coordonées aux tetromino
           x = Number(val[0]);
           y = Number(val[1]);
           x2 = Number(val[2]);
@@ -148,7 +166,6 @@
           y3 = Number(val[5]);
           x4 = Number(val[6]);
           y4 = Number(val[7]);
-          //console.log(x,y,x2,y2);
           
           /* affiche le téromino à la position suivante*/
           document.getElementById(y+","+x).style.backgroundColor = val[8];
@@ -160,16 +177,8 @@
         /*******************************
          GESTION DE L'ARRET DU TETROMINO 
          *******************************/
+        //reception du message qui indique la fixation d'un tetromino
         socket.on('lock', function(message) {
-          //console.log("lock");
-          
-          /* changement de la couleur du tetromino*/
-          // document.getElementById(y+","+x).style.backgroundColor = "blue";
-          // document.getElementById(y2+","+x2).style.backgroundColor = "blue";
-          // document.getElementById(y3+","+x3).style.backgroundColor = "blue";
-          // document.getElementById(y4+","+x4).style.backgroundColor = "blue";
-          //console.log("lock",x,y,x2,y2,x3,y3,x4,y4)
-          
           /* réinitialisation des variables*/
           x = 0;
           y = 0;
@@ -184,13 +193,12 @@
         /**************************************************
          GESTION DE LA SUPRESSION D'UNE ou PLUSIEURS LIGNES
          **************************************************/
+        //reception du message qui indique la supression d'une ligne 
         socket.on('supp', function(message) {
-          //console.log("supp",message);
           
            /* supression de la ligne*/
           for(var p=1;p<message[0]+1;p++) {  
             x = message[p];
-            //console.log("eff " +x+message[1]);
             for(var i=9; i>=0; i--) {
               for(var j=x; j>=0; j--) {
                 if(j != 0) {
@@ -223,9 +231,9 @@
         /*******************************
          Visibilité du tetromino suivant
          *******************************/
+        //recetion du message qui permet d'afficher le tetromino suivant
         socket.on ('suiv',function(message) {
           val = message.split(' ');
-         
           /* efface le tétromino de la position précédente*/
           var i, j;
           //génération d'une grille de 20 case de haut et 10 cases de large
@@ -235,18 +243,19 @@
             }
           }
 
-          
           /* affiche le téromino à la position suivante*/
-          document.getElementById(Number(val[1])+";"+Number(val[0])).style.backgroundColor = "red";
-          document.getElementById(Number(val[3])+";"+Number(val[2])).style.backgroundColor = "red";
-          document.getElementById(Number(val[5])+";"+Number(val[4])).style.backgroundColor = "red";
-          document.getElementById(Number(val[7])+";"+Number(val[6])).style.backgroundColor = "red";
+          document.getElementById(Number(val[1])+";"+Number(val[0]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[3])+";"+Number(val[2]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[5])+";"+Number(val[4]-3)).style.backgroundColor = "red";
+          document.getElementById(Number(val[7])+";"+Number(val[6]-3)).style.backgroundColor = "red";
           
         });
+        
         
         /***************************
          GESTION DE LA FIN DE PARTIE
          ***************************/
+        //reception du message de game over
         socket.on('GameOver',function(message) {
           /* modification de l'affichage*/
           document.getElementById("Fin").style.backgroundColor = "black";
@@ -254,11 +263,8 @@
           document.getElementById("retour").innerHTML = " <a href='jeu.html' id = 'retourmenu' >Accueil</a>  <a href='tetrisUnJoueur.html' id = 'rejouer' >Rejouer</a>";
           document.getElementById("retourmenu").setAttribute("href", "/jeu");
           document.getElementById("rejouer").setAttribute("href", "/tetrisUnJoueur");
-          /* mise à jour de la base de donnée*/
-          saveStats();
-          /* arret du socket*/
+          //arret de l'envoi des commande
           clearInterval(clock);
-          socket.disconnect();
         });
         
         /******************
@@ -277,19 +283,13 @@
           CMDsend = dir;
         }
 
-        /* fonction utiliser pour enregistre le nouveau score total dans la BD (requête au serveur)*/
-        function saveStats() {
-          const data = {"type": "save_stats",
-                        "username": sessionStorage.username,
-                        "scoreT": sessionStorage.score}
-          socket.emit('gestion', JSON.stringify(data));
-        }
       </script>
       
     </div>
+    <br/><br/><br/><br/><br/><br/>
     <!-- Bas de page -->
     <div id = "footer">
-      <h2> Site réalisé pour le projet AWS UVSQ 2020 </h2>
+      <h2> Tetris Battle! - Site réalisé pour le projet AWS UVSQ 2020 </h2>
     </div>
   </body>
 </html>

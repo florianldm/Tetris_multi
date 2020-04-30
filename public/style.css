@@ -1,9 +1,17 @@
-/* CSS files add styling rules to your content */
-
 body {
+  margin: 0;
   font-family: helvetica, arial, sans-serif;
   background: #CF4242;
   min-width:600px;
+}
+
+/* Titre Tetris Battle dans le menu du site */
+#titre_menu {
+  display: inline;
+  color: white;
+  font: 0.7em Bowlby One SC, Georgia, Arial;
+  margin-left:1%;
+  padding: 0px 20px 8px;
 }
 
 /* Titre du jeu accueil (changement de couleurs)*/
@@ -12,17 +20,8 @@ body {
   font: 7em Bowlby One SC, Georgia, Arial;
   text-align: center;
   position: relative; 
-  z-index: 50;
+  z-index: 45;
   -webkit-animation:colorchange 20s infinite alternate;
-}
-
-/* Titre du jeu dans menu*/
-#titre_menu {
-  display: inline;
-  color: white;
-  font: 0.7em Bowlby One SC, Georgia, Arial;
-  margin-left:1%;
-  padding: 0px 20px 8px;
 }
 
 h1{
@@ -41,7 +40,7 @@ h2 a{
   color: red;
 }
 
-/* Menu */
+/* Menu du site */
 #menu {
   background: #636363;
 	height: 45px;
@@ -71,15 +70,34 @@ h2 a{
 	color: #CF4242;
   padding: 0px 20px 4px;
 }
-/* Fin menu */
+  
+ /* Menu mobile désactivé en affichage normal*/
+ .menu{
+    display: none;
+  }
 
+/* Classement pour mobiles désactivé en affichage normal */
+#classementMobile {
+  display: none;
+}
+
+.conteneur_CLASSEMENTMobile {
+  display: none;
+}
+
+/* Affichage du classement des joueurs en fonction du score */
+#classementPC{
+    display: block;
+  }
 
 /* Concerne "Vos amis" et "vos statistiques" dans profil */
+/* Statistiques */
 #bloc1{
   margin-left: 15%;
   margin-right: 10%;
 }
 
+/* Amis + classement */
 #bloc2{
   margin-left: 16%;
   margin-right: 10%;
@@ -95,8 +113,10 @@ h2 a{
   margin-top: 0;
   position: relative;
   width: 500px;
+  max-width: 500px;
 }
 
+/* Bloc contenant toutes les infos du joueur */
 #conteneur_profil td{
   width: 10%;
 }
@@ -133,6 +153,7 @@ h2 a{
   margin-left: 2%;
   padding: 0px 0px 0px 0px;
   height: 100%;
+  width: auto;
 }
 
 .conteneur_AMIS h1{
@@ -145,6 +166,7 @@ h2 a{
   margin-left: 0%;
 }
 
+/* Tableau des amis en ligne */
 #affichage_amis{
 	overflow-y: scroll;
 	margin: 0px;
@@ -153,12 +175,13 @@ h2 a{
   min-height: 300px;
   max-height: 300px;
 }
-t
+
 #affichage_amis h1{
 	font: 1em Bowlby One SC, Arial;
   display: inline;
 }
 
+/* Tableau affichage des amis */
 #tableau_amis {
   display: inline-block; 
 }
@@ -172,7 +195,7 @@ t
   width: auto;
 }
 
-
+/* affichage du classement */
 .conteneur_CLASSEMENT{
   transition: 0.2s;
   background: white;
@@ -193,6 +216,7 @@ t
   margin-left: 0%;
 }
 
+/* affichage du classement (scroll) */
 #affichage_classement{
 	overflow-y: scroll;
 	border-style: solid;
@@ -202,6 +226,7 @@ t
   text-align: center;
 }
 
+/* Classement sous forme de tableau */
 #tableau_classement{
   margin: auto;
   display: inline-block; 
@@ -217,6 +242,7 @@ t
   width: auto;
 }
 
+/* Bloc des statistiques */
 #conteneur_SCORE{
   transition: 0.5s;
   background: #F0CC00;
@@ -226,12 +252,20 @@ t
   margin: auto;
   margin-left: 1%;
 }
+
 /* Section vos statistiques */
 #conteneur_SCORE h1{
   border-left: 0px;
   margin-top:0px;
   margin-bottom:0px;
 }
+
+#conteneur_SCORE:hover{
+  width: 100%;
+  transition: 0.5s;
+  margin-left: 0%;
+}
+
 
 #affichage_stats {
 	margin: 0px;
@@ -250,11 +284,7 @@ t
   width: 10%:
 }
 
-#conteneur_SCORE:hover{
-  width: 100%;
-  transition: 0.5s;
-  margin-left: 0%;
-}
+
 /* Fin section Vos amis" et "vos statistiques" dans profil */
 
 /* Boite "noire" dans index.html qui accueille Titre box + animation tetris */
@@ -385,17 +415,18 @@ t
         100% { color: blue; }
 }
 
+/* Popup d'invitation */
 #popinvite {
   height: 300px;
   width: 20%;
   background-color: #FFFFFF;
   text-align: center;
   color: #95a5a6;
-  position: absolute;
+  position: fixed;
   top: -300px;
   left: 80%;
   transition: 0.5s;
-  z-index: 50;
+  z-index: 49;
 }
 
 #popinvite h1 {
@@ -403,6 +434,7 @@ t
   font: 1.5em Bowlby One SC, Arial;
 }
 
+/* Popup d'informations lors d'un ajout de joueur en ami */
 #popajout {
   height: 40px;
   width: 30%;
@@ -420,17 +452,138 @@ t
   font: 1.2em Bowlby One SC, Arial;
 }
 
-@media screen and (max-width: 700px) {
-  html{
-    width:100%;
+/* Popup de comparaison des stats entre 2 amis */
+#popcompare {
+  width: 30%;
+  background-color: #FFFFFF;
+  text-align: center;
+  color: #95a5a6;
+  position: fixed;
+  top: -500px;
+  left: 35%;
+  transition: 0.5s;
+  z-index: 49;
+  border-style: solid;
+	border-width: 0.5px;
+}
+
+#popcompare tr {
+  padding: 0;
+}
+
+#popcompare h1 {
+  border-left: 0px solid #636363;
+  font: 1.5em Bowlby One SC, Arial;
+  margin:0;
+}
+
+
+/* PARTIE MOBILE  */
+@media screen and (max-width: 600px) {
+  .menu a:not(:first-child) {display: none;}
+  .menu a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  body{
+    width: auto;
+    min-width: 0px;
   }
   
-  body {
-    font-family: helvetica, arial, sans-serif;
-    background: #CF4242;
-    width:50%;
+  h1 {
+     font: 1.2em Bowlby One SC, Georgia, Arial;
   }
   
+  /* Masquage du menu en affichage normal */
+  #menu {
+    display:none;
+  }
+  
+  /* Masquage du classement en affichage normal */
+  #classementPC{
+    display: none;
+  }
+  
+  /* Affichage classement version mobile */
+  #classementMobile {
+    display: block;
+  }
+  
+ 
+  .conteneur_CLASSEMENTMobile {
+    display: block;
+  }
+  
+  /* Menu version mobile */
+  .menu {
+    display: block;
+    overflow: hidden;
+    background-color: #636363;
+    width: 100%;
+    position: fixed;
+    z-index: 55;
+  }
+
+  .menu a,li {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  .menu.responsive {position: relative;}
+  .menu.responsive .icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .menu.responsive a,li {
+    float: none;
+    display: block;
+    text-align: left;
+    font: 1.1em Bebas Neue, Arial;
+  }
+  
+  /* Titre du menu */
+  #titre_menuMobile {
+    display: inline;
+    color: white;
+    font: 1.9em Bowlby One SC, Georgia, Arial;
+    margin-left:1%;
+    padding: 0px 20px 8px;
+  }
+
+  /* Boite "noire" dans index.html qui accueille Titre box */
+  #tetrisbox{
+    background: black;
+    width: auto;
+  }
+
+  #tetrisbox h1{
+    border-left: 0px solid #636363;
+    color: white;
+    font: 1em Bowlby One SC, Georgia, Arial;
+  }
+
+  #tetrisbox h1 a{
+    color: white;
+    border-left: 0px solid #636363;
+    text-decoration: none;
+    margin-left: 40%;
+    z-index: 53;
+  }
+
+  #tetrisbox h1 a:hover{
+    color: #CF4242;
+  }
+  /*Fin boite noire*/
+  
+  /* Titre du jeu accueil (changement de couleurs)*/
   #titre {
     color: white;
     font: 2em Bowlby One SC, Georgia, Arial;
@@ -439,40 +592,208 @@ t
     z-index: 50;
     -webkit-animation:colorchange 20s infinite alternate;
   }
-
-  h1{
-    font: 1em Bowlby One SC, Arial;
-    border-left: 10px solid #636363;
-    padding: 0px 10px 0px;
+  
+  /*Page de connexion*/
+  #login{
+    transition: 0.3s;
+    background: white;
+    box-shadow: 0px -4px 20px #636363;
+    margin: 0;
   }
   
-  #menu {
-  background: #636363;
-	height: 45px;
-	box-shadow: 0px 4px 0px #CF4242;
-  position: fixed;
-  z-index: 51;
-  top: 0;
-  width:100%;
-}
+  /* Page d'inscription */
+  #inscription{
+    transition: 0.3s;
+    background: white;
+    box-shadow: 0px -4px 20px #636363;
+    margin: 0;
+  }
+  
+  /* Section des statistiques */
+  #conteneur_SCORE{
+    transition: 0.5s;
+    background: #F0CC00;
+    color: white;
+    box-shadow: 0px -4px 20px #636363;
+    width: 100%;
+    margin: 0;
+    margin-left: 1%;
+  }
+  
+  /* Section statistiques */
+  #bloc1{
+    margin: auto;
+    margin-left: 0;
+  }
+  
+  /* Section amis + classement */
+  #bloc2{
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0px 0px 10px 0px;
+    table-layout: auto;
+    max-height: 10%;
+    border-spacing: 0px 0px;
+    cellspacing: 2;
+  }
+  
+  #bloc2 td{
+    margin-left: 0;
+    padding: 15px 0px 0px 0px;
+    width: 100%;
+  }
+  
+  /* Affichage des stats */
+  #affichage_stats {
+    margin: 0;
+    height: 20%;
+  }
 
-#menu li {
-	display: inline;
-	font: 1em Bebas Neue, Arial;
-	text-align: center;
-	opacity: 1;
-}
+  #affichage_stats h1{
+    margin-left: 0px;
+    font: 1em Bowlby One SC, Arial;
+    display: inline;
+  }
 
-#menu a {
-	color: #FBF8F8;
-	text-decoration: none;
-	padding: 0px 5px 8px;
-}
+  /* Tableau d'affichage des stats */
+  #tableau_stats {
+    border-collapse: collapse;
+    table-layout: auto; 
+    width: 10%:
+  }
 
-#menu a:hover {
-  transition: 0.2s;
-	background-color: #ffffff;
-	color: #CF4242;
-  padding: 0px 0px 4px;
-}
+  /* Partie des stats */
+  #conteneur_SCORE{
+    margin-left: 0px;
+  }
+  
+  /* Partie du classement */
+  .conteneur_CLASSEMENT{
+    display:none;  
+  }
+  
+  .conteneur_CLASSEMENTMobile{
+    transition: 0.2s;
+    background: white;
+    color: #3e3131;
+    border-left: 0px;
+    box-shadow: 0px -4px 20px #636363;
+    margin-left: 0%;
+    padding: 0px 0px 0px;
+ }
+
+  .conteneur_CLASSEMENTMobile h1{
+    border-left: 0px;
+    margin: 0;
+  }
+
+  .conteneur_CLASSEMENTMobile:hover{
+    background-color: #F0CC00;
+    color: white;
+    margin-left: 0%;
+  }
+
+  #affichage_classementMobile{
+    overflow-y: scroll;
+    border-style: solid;
+    border-width: 1px;
+    min-height: 300px;
+    max-height: 300px;
+    text-align: center;
+  }
+
+  #tableau_classementMobile{
+    margin: auto;
+    display: inline-block; 
+    overflow: auto;
+  }
+
+  #tableau_classementMobile h1{
+    font: 1em Bowlby One SC, Arial;
+    margin:0;
+  }
+
+  #tableau_classementMobile td {
+    width: auto;
+  }
+
+  /* Partie amis */
+    .conteneur_AMIS{
+      transition: 0.2s;
+      background: white;
+      color: #3e3131;
+      border-left: 0px;
+      box-shadow: 0px -4px 20px #636363;
+      margin-left: 0%;
+      padding: 0px 0px 0px 0px;
+      height: 100%;
+      width: auto;
+  }
+
+  /* Popup d'ajout d'amis */
+  #popajout {
+    height: 40px;
+    width: auto;
+    background-color: #FFFFFF;
+    text-align: center;
+    color: #95a5a6;
+    top: -300px;
+    transition: 0.5s;
+    margin:0;
+    position: fixed;
+    z-index: 50;
+  }
+
+  #popajout h1 {
+    border-left: 0px solid #636363;
+    font: 1em Bowlby One SC, Arial;
+  }
+
+  /* Popup d'invitation */
+  #popinvite {
+    height: 300px;
+    width: 100%;
+    background-color: #FFFFFF;
+    text-align: center;
+    color: #95a5a6;
+    position: fixed;
+    top: -300px;
+    transition: 0.5s;
+    z-index: 50;
+    left: 0;
+  }
+
+  #popinvite h1 {
+    border-left: 0px solid #636363;
+    font: 1.5em Bowlby One SC, Arial;
+  }
+  
+  /* Popup de comparaison des stats entre 2 amis */
+  #popcompare {
+    width: 100%;
+    background-color: #FFFFFF;
+    text-align: center;
+    color: #95a5a6;
+    position: fixed;
+    top: -500px;
+    left: 0;
+    transition: 0.5s;
+    z-index: 49;
+    border-style: solid;
+    border-width: 0px;
+ }
+
+  #popcompare tr {
+    padding: 0;
+  }
+
+  #popcompare h1 {
+    border-left: 0px solid #636363;
+    font: 1.5em Bowlby One SC, Arial;
+    margin:0;
+  }
+  /* Désactive animation accueil sur mobile */
+  #tetros {
+    display: none;
+  }
 }

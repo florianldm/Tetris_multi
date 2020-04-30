@@ -14,7 +14,8 @@ h1{
 body{
   background-color: black;
   margin : auto auto;
-  width: 50%;
+  
+
 }
 /*permet de changer de couleur ( utiliser pour le titre) */
 @-webkit-keyframes colorchange {
@@ -24,15 +25,67 @@ body{
 }
 
 
+h3{
+  font: 1.5em Bowlby One SC, Arial;
+  color: white;
+  text-align: center;
+}
+
+h3 a{
+  text-decoration: none;
+  color: white;
+}
+
+h3 a:hover{
+  color: #CF4242;
+}
+
+
+/*********************
+Conteneur joueur
+**********************/
+#block-jeu{
+  vertical-align : center;
+
+  
+}
+
+#tableau-jeu-solo {
+  border-collapse: collapse;
+  margin-left: 33%;
+  
+}
+
+#tableau-jeu-solo td{
+  margin-top: 0px;
+  text-align:top;
+  border-spacing: 50px 10px;
+  vertical-align: top;
+}
+
+#tableau-jeu {
+  border-collapse: collapse;
+  margin: auto;
+  
+}
+
+#tableau-jeu td{
+  margin-top: 0px;
+  text-align:top;
+  border-spacing: 50px 10px;
+  vertical-align: top;
+}
+
+
 /*********************
 CSS Information joueur
 **********************/
+#infos1v1 {
+  margin-left: 36%;
+}
+
 #Info{
-  position : absolute;
-  margin-top : 3%;
-  margin-left: 5%;
-  vertical-align:middle;
-  magin-left:20%
+  display: inline-table;
 }
 
 #Info tr{
@@ -41,13 +94,39 @@ CSS Information joueur
   font: 1.4em Bebas Neue, Arial;
 }
 
+#Infoj2 {
+  display:inline-table;
+  margin-left: 10%;
+}
+
+#Infoj2 tr{
+  list-style: none;
+  color: white;
+  font: 1.4em Bebas Neue, Arial;
+}
+
+#tetrosuiv {
+  color: white;
+  font: 1.4em Bebas Neue, Arial;
+}
+
+
 /****************
 CSS Grille de jeu
 *****************/
+#aligngrilles {
+  overflow: hidden;
+  display:inline;
+  border-collapse: separate;
+  border-spacing: 15px 10px;
+  margin-left: 25%;
+}
+
 #grille{
-  margin-left:37%; 
-  margin-right:40%;
-  border-collapse: collapse;  
+  margin-left:0%; 
+  margin-right:50%;
+  border-collapse: collapse;
+  display:inline;
 }
 
 #grille td{
@@ -59,12 +138,7 @@ CSS Grille de jeu
 CSS Tetromino suivant
 *********************/
 #tetromino-suiv{
-  position : absolute;
-  margin-top : 15%;
-  margin-left:35%;
-  width : 90px;
-  border: thick double white;
-
+  
 }
 #tetromino{
    border: black;
@@ -79,8 +153,9 @@ CSS Fin de partie
 *****************/
 #Fin {
   position : absolute;
-  margin-top : 7%;
-  margin-left:15%;
+  margin-left:40%; 
+  margin-top: 6%;
+  margin-right:40%;
   width: 330px;
   z-index : 1; /*pour mettre au premier plan*/
   text-align: center;
@@ -120,4 +195,6 @@ CSS bas de page
 #footer h2{
   color: white;
   text-align: center;
+  font: 1.4em Bebas Neue, Arial;
+  padding: 0px 10px 0px;
 }
